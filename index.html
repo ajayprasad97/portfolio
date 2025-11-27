@@ -1,28 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>AJAX HTTP GET Example</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
-	<h1>HTTP GET Example</h1>
-	<p>Click the button to make an HTTP GET request.</p>
-	<button onclick="makeRequest()">Make Request</button>
-	<div id="response"></div>
-	<script>
-		function makeRequest() {
-			$.ajax({
-				url: "https://jsonplaceholder.typicode.com/todos/1",
-				type: "GET",
-				dataType: "json",
-				success: function(data) {
-					$("#response").html("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					$("#response").html("<p>Error: " + errorThrown + "</p>");
-				}
-			});
-		}
-	</script>
+<body class="light-theme">
+  <!-- Header / Navigation -->
+  <header class="header">
+    <nav class="nav">
+      <a href="#home" class="logo">MyPortfolio</a>
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Hello, I'm <span class="accent">Ajay Prasad</span></h1>
+      <p>A <strong>mechanical engineer</strong> crafting clean, modern design experiences.</p>
+      <a href="#projects" class="btn-primary">View My Work</a>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <h2>Featured Projects</h2>
+    <div id="projects-container" class="projects-grid">
+      <!-- Project cards rendered via JS or manually added here -->
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <h2>About Me</h2>
+    <p>
+      Write a short introduction about yourself here. Mention your skills,
+      experience, and what you love building.
+    </p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2>Contact</h2>
+    <p>Feel free to reach out via email:</p>
+    <a href="mailto:ajay.sedsvit@gmail.com" class="email-link">ajay.sedsvit@gmail.com.com</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© <span id="year"></span>Ajay Prasad. All rights reserved.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
