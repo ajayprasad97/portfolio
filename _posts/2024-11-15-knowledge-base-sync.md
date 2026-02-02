@@ -2,6 +2,11 @@
 title: "Automated Knowledge-Base Sync Pipeline"
 preview: "Shell + Ruby pipelines that automated syncing of knowledge-base content and generating release notes."
 cover: /assets/img/cover-placeholder.svg
+featured: true
+tags:
+  - Automation
+  - Docs
+  - Tooling
 links:
   - label: "Case Study"
     url: "#"

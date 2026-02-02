@@ -10,6 +10,14 @@ theme: jekyll-theme-minimal
 
 plugins: []
 
+social:
+  - label: LinkedIn
+    url: "#"
+  - label: GitHub
+    url: "#"
+  - label: Email
+    url: "mailto:you@example.com"
+
 # Keep custom domain
 include:
   - CNAME

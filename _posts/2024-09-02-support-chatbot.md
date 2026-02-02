@@ -2,6 +2,10 @@
 title: "Support Chatbot"
 preview: "Chatbot that streamlined support workflows and reduced repetitive inquiries."
 cover: /assets/img/cover-placeholder.svg
+tags:
+  - AI
+  - Support
+  - Product
 links:
   - label: "Demo"
     url: "#"

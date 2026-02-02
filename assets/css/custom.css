@@ -181,10 +181,41 @@ section {
   margin: auto;
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.section-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgba(31, 95, 91, 0.12);
+  flex-shrink: 0;
+}
+
 h2 {
   font-size: 2.2rem;
-  margin-bottom: 2rem;
-  text-align: center;
+  text-align: left;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.08));
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.now-section {
+  padding-top: 2rem;
+}
+
+.now-text {
+  font-size: 1.05rem;
+  color: var(--muted);
 }
 
 .projects-grid {
@@ -201,6 +232,69 @@ h2 {
   background: var(--surface);
 }
 
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.tag {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: #fafafa;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 2rem;
+}
+
+.filter-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.filter-btn.is-active,
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 2rem;
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  margin-bottom: 2rem;
+}
+
+.featured-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.featured-cover {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
 .project-card:hover {
   transform: translateY(-5px);
   border-color: var(--accent);
@@ -333,6 +427,10 @@ h2 {
     max-width: 280px;
   }
 
+  .featured-card {
+    grid-template-columns: 1fr;
+  }
+
   .project-layout {
     grid-template-columns: 1fr;
     margin-top: 5rem;
@@ -358,4 +456,37 @@ h2 {
   .nav-links {
     gap: 1rem;
   }
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  background: #f2f2ef;
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--accent);
 }
