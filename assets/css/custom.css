@@ -387,6 +387,60 @@ h2 {
   margin-bottom: 2rem;
 }
 
+.project-content h1,
+.project-content h2,
+.project-content h3,
+.project-content h4 {
+  margin: 1.6rem 0 0.75rem;
+  line-height: 1.25;
+}
+
+.project-content p {
+  margin: 0.8rem 0;
+}
+
+.project-content ul,
+.project-content ol {
+  margin: 0.75rem 0 1rem 1.25rem;
+  padding-left: 0.5rem;
+}
+
+.project-content li {
+  margin: 0.35rem 0;
+}
+
+.project-content code {
+  font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.95rem;
+  background: #f3f3f1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.12rem 0.35rem;
+}
+
+.project-content pre {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.2rem;
+  background: #f3f3f1;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.project-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.project-content blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+}
+
 .project-links {
   display: flex;
   flex-wrap: wrap;
