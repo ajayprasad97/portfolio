@@ -1,0 +1,60 @@
+[
+  {
+    "slug": "knowledge-base-sync",
+    "title": "Automated Knowledge-Base Sync Pipeline",
+    "date": "2024-11-15",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "Shell + Ruby pipelines that automated syncing of knowledge-base content and generating release notes.",
+    "content": "Built an automated pipeline that synced knowledge-base content across tools, generated release notes, and reduced manual documentation time. Focused on reliability, diffing, and repeatable publishing workflows.",
+    "links": [
+      { "label": "Case Study", "url": "#" }
+    ]
+  },
+  {
+    "slug": "support-chatbot",
+    "title": "Support Chatbot",
+    "date": "2024-09-02",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "Chatbot that streamlined support workflows and reduced repetitive inquiries.",
+    "content": "Designed a support chatbot that surfaces relevant documentation, routes questions, and reduced repetitive inquiries. Emphasis on intent detection, handoff to humans, and measurable resolution improvements.",
+    "links": [
+      { "label": "Demo", "url": "#" }
+    ]
+  },
+  {
+    "slug": "bigquery-analytics",
+    "title": "BigQuery Analytics Pipelines",
+    "date": "2024-06-20",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "SQL + BigQuery pipelines for licensing usage insights and product analytics.",
+    "content": "Designed and deployed data pipelines that analyze licensing usage and generate product insights. Included scheduled jobs, data quality checks, and dashboard-friendly tables.",
+    "links": []
+  },
+  {
+    "slug": "ntop-templates",
+    "title": "nTop Workflow Templates",
+    "date": "2024-04-05",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "Reusable nTop workflow templates for topology optimization and DFAM.",
+    "content": "Created reusable workflow templates that accelerated topology optimization, DFAM, and lightweighting across teams. Focused on repeatable parameters and clean UX within nTop.",
+    "links": []
+  },
+  {
+    "slug": "solidworks-prototypes",
+    "title": "PDM/SOLIDWORKS Feature Prototypes (Dassault Systèmes)",
+    "date": "2023-12-01",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "Prototyped 11 new features with R&D, including UI/UX mockups and workflow diagrams.",
+    "content": "Partnered with R&D to prototype new PDM features. Produced UI/UX mockups, workflow diagrams, and functional definitions to de-risk implementation.",
+    "links": []
+  },
+  {
+    "slug": "guest-lectures",
+    "title": "Guest Lectures & Workshops",
+    "date": "2023-09-10",
+    "cover": "assets/img/cover-placeholder.svg",
+    "preview": "Talks at MIT, Penn State CIMP-3D, and CU Boulder on computational design.",
+    "content": "Delivered sessions on computational design, topology optimization, and DFAM. Focused on practical workflows and approachable mental models for students and practitioners.",
+    "links": []
+  }
+]
