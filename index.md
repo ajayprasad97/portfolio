@@ -4,16 +4,24 @@ title: Home
 ---
 
 <section class="hero">
-  <h1 class="hero-title">Hi, I'm <span class="hero-name">Ajay Prasad</span></h1>
-  <p class="hero-subtitle">Developer • Designer • Engineer</p>
-  <a href="#projects" class="btn">View My Work</a>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1 class="hero-title">Hi, I'm <span class="hero-name">Ajay Prasad</span></h1>
+      <p class="hero-subtitle">Developer • Designer • Engineer</p>
+      <a href="#projects" class="btn">View My Work</a>
+    </div>
+    <figure class="polaroid">
+      <img src="assets/img/ajay.jpg" alt="Ajay Prasad" />
+      <figcaption>Ajay Prasad</figcaption>
+    </figure>
+  </div>
 </section>
 
 <section id="about">
   <h2>About Me</h2>
   <p>
-    I build modern digital experiences and solve meaningful problems with code,
-    design thinking, and systems engineering.
+    I'm a Mechanical Engineer working in a technical support role, helping customers solve complex engineering workflows. Through this work, I get a front-row seat to how products are used in real-world scenarios.
+    I'm passionate about product development and enjoy building and shipping smaller tools and improvements within the product support space. I'm especially interested in simplifying complex systems, improving user experience, and turning customer pain points into scalable solutions.
   </p>
 </section>
 
