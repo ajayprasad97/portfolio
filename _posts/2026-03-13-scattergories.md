@@ -47,6 +47,20 @@ The tech stack stayed lean throughout: a single `index.html` for the entire fron
 
 ---
 
+## Building It With Claude
+
+I should be upfront: I didn't build this alone. I used Claude as a coding collaborator throughout the entire project — not just for boilerplate, but for the hard parts too.
+
+The workflow was conversational. I'd describe what I wanted, Claude would produce the code, I'd push it and test it, then come back with what broke. Over time Claude built up context about the project — the socket event names, the room state structure, the decisions we'd made along the way — which made it feel less like prompting a tool and more like working with someone who was actually familiar with the codebase.
+
+What surprised me was how useful it was for the parts I find tedious. Setting up the integration test suite, wiring up the rejoin logic, tracking down which event was causing a race condition — these are the kinds of tasks where I know what I want to achieve but the implementation details slow me down. Having Claude handle the mechanical parts meant I could stay focused on the game design and the player experience.
+
+That said, I had to stay engaged the whole time. Claude would occasionally introduce a fix that solved one problem and created another, or patch something in a way that worked but wasn't quite right. Catching those required actually understanding the code, not just running it. The final product reflects real decisions I made — about the voting rules, the data model, how reconnection should work — Claude just helped me build them faster than I could have alone.
+
+If you're a developer who hasn't tried this kind of AI-assisted workflow yet, I'd recommend it. Not as a replacement for thinking, but as a way to spend more of your time on the interesting problems.
+
+---
+
 ## What Went Wrong (And How I Fixed It)
 
 ### The race condition that wouldn't die
@@ -81,11 +95,17 @@ The fix was a `force_end_round` socket event, only registered when `NODE_ENV=tes
 
 ## Playing It With Friends
 
+*[Screenshot: lobby screen with 4 players joined]*
+
 After a few weeks of building I finally got a group together to play. We ran three rounds with a 2-minute timer and 15 categories. Within the first round I found two bugs I'd never hit in solo testing — one where a player's answers didn't save when they typed too fast, and one where the review screen showed the wrong round number.
+
+*[Screenshot: review phase with voting in progress]*
 
 Both were fixed the same night. The autosave was debounced too aggressively and was dropping keystrokes. The round number was an off-by-one in the `phase_change` emit.
 
-The scoring and voting held up well. The 2-minute timer created genuine pressure and the duplicate detection worked exactly as intended — watching everyone write "Whale" for a sea creatures category and have them get wiped out is genuinely funny.
+*[Screenshot: final scores screen with answer summary]*
+
+The scoring and voting held up well. The 2-minute timer created genuine pressure and the duplicate detection worked exactly as intended — watching two people both write "Avocado" for a food category and have them both get wiped out is genuinely funny.
 
 ---
 
