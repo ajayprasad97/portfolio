@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<section class="project-layout">
+  <aside class="project-sidebar">
+    <div class="sidebar-title">Other Projects</div>
+    <div class="project-list">
+      {% for post in site.posts %}
+        {% if post.url != page.url %}
+          <a class="project-item" href="{{ post.url | relative_url }}">
+            <div class="project-item-title">{{ post.title }}</div>
+            <div class="project-item-preview">{{ post.preview }}</div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </aside>
+
+  <article class="project-main">
+    <img class="project-cover" src="{{ page.cover | default: '/assets/img/cover-placeholder.svg' | relative_url }}" alt="{{ page.title }}" />
+    <h1 class="project-title">{{ page.title }}</h1>
+    <div class="project-meta">{{ page.date | date: "%B %d, %Y" }}</div>
+    <div class="project-content">{{ content }}</div>
+
+    {% if page.links %}
+      <div class="project-links">
+        {% for link in page.links %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </article>
+</section>

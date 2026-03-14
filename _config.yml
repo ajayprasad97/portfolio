@@ -1,0 +1,40 @@
+# Jekyll configuration for GitHub Pages
+
+title: Ajay Prasad
+email: you@example.com
+description: "Portfolio and project notes"
+url: ""
+baseurl: ""
+
+theme: jekyll-theme-minimal
+
+plugins: []
+
+social:
+  - label: LinkedIn
+    url: "#"
+  - label: GitHub
+    url: "#"
+  - label: Email
+    url: "mailto:you@example.com"
+
+# Keep custom domain
+include:
+  - CNAME
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /projects/:title/
+
+# Markdown
+markdown: kramdown
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
