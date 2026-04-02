@@ -1,7 +1,7 @@
 ---
 title: "Automated Knowledge-Base Sync Pipeline"
 preview: "GitHub based pipelines that automated syncing of knowledge-base content"
-cover: /assets/img/kb-sync.png
+cover: /assets/img/kb-sync.webp
 featured: true
 tags:
   - Automation
