@@ -1,7 +1,7 @@
 # Jekyll configuration for GitHub Pages
 
 title: Ajay Prasad
-email: you@example.com
+email: sayhi@ajayprasad.com
 description: "Portfolio and project notes"
 url: ""
 baseurl: ""
@@ -12,11 +12,11 @@ plugins: []
 
 social:
   - label: LinkedIn
-    url: "#"
+    url: "http://linkedin.com/aj97"
   - label: GitHub
-    url: "#"
+    url: "https://github.com/ajayprasad97"
   - label: Email
-    url: "mailto:you@example.com"
+    url: "mailto:sayhi@ajayprasad.com"
 
 # Keep custom domain
 include:

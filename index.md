@@ -93,5 +93,5 @@ title: Home
     <h2>Contact</h2>
   </div>
   <p>Feel free to reach out via email or connect on LinkedIn/GitHub.</p>
-  <a href="mailto:you@example.com" class="btn">Email Me</a>
+  <a href="mailto:sayhi@ajayprasad.com" class="btn">Email Me</a>
 </section>
