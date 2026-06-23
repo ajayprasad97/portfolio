@@ -104,8 +104,4 @@ One thing I'd do differently: I spent more time on features than on screenshots 
 
 ---
 
-## What's Next
-
-Next up: richer progress tracking, improvements to the social and buddy session experience, and deeper coaching features. The exercise library also has gaps — cardio coverage is thin and there's more curation work to do.
-
-Two months is enough time to build something real. It's not enough to build something finished. [Rep is on the App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) — free to download.
+Two months is enough time to build something real. It's not enough to build something finished — there's a lot more in the pipeline. [Rep is on the App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) — free to download.
