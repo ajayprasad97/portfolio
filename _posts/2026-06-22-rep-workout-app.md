@@ -1,7 +1,7 @@
 ---
 title: "Building Rep: A Workout App That Actually Programs Your Training"
 preview: "How I built a React Native workout tracker with a 1,100+ exercise library, a double-progression engine, and deload cycles — and shipped it to the App Store in two months."
-cover: /assets/img/rep-workout.png
+cover: /assets/img/rep_cover.png
 featured: true
 tags:
   - React Native
