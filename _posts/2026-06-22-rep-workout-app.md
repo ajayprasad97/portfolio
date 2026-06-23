@@ -16,13 +16,11 @@ links:
 
 Most workout apps solve a narrow problem. The simple ones are just logs — you enter weight and reps, they store it. The complex ones are subscription-gated personal trainer platforms that cost $30 a month and assume you want to be told exactly what to do by someone who doesn't know you. There's a gap in the middle: an app that understands programming principles, adapts to how you're actually training, and doesn't require a subscription to function.
 
-That's what I built. Rep generates your daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a double-progression engine to tell you when to add weight, knows when you need to deload, and adjusts to your equipment. It took two months from the first commit to the App Store. Here's how it went.
+Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a double-progression engine to know when to add weight, and flags deload weeks when your fatigue catches up. Two months from first commit to App Store.
 
 ---
 
-## What the App Actually Does
-
-Before the technical detail: the core loop.
+## The Core Loop
 
 You tell Rep your goal (strength, hypertrophy, or endurance), how many days per week you train, what equipment you have access to, and your training age. From there it generates a workout every day — real exercises matched to your muscle group schedule, filtered by what you actually have available.
 
@@ -34,7 +32,7 @@ There's also a social layer — a feed where you can see friends' workouts, budd
 
 ## Stack Decisions
 
-**React Native + Expo** was the natural choice for a first iOS app. The Expo Go development loop — scan a QR code, see changes instantly — is genuinely fast. I didn't need bare workflow or any custom native modules, so managed Expo worked throughout. I used Expo Router 6 for file-based routing, which I'll come back to.
+**React Native + Expo** let me move fast without a native build on every change. The Expo Go loop — scan a QR code, see changes instantly on device — cut the edit-compile-run cycle to seconds. I didn't need bare workflow or any custom native modules, so managed Expo worked throughout. I used Expo Router 6 for file-based routing, which I'll come back to.
 
 **expo-sqlite** for local storage was one of the best early decisions. The entire workout history, exercise library, progression state, and user settings live in a SQLite database on device. The app works offline. There's no subscription required to access your own data. Reads are synchronous and fast. The tradeoff is that schema changes require migrations — I have an append-only `migrations` array in `lib/db.ts` and a rule that says never alter existing `CREATE TABLE` statements — but that discipline is worth it.
 
@@ -56,7 +54,7 @@ The library is now maintained independently. Keeping it as a versioned JSON payl
 
 ## The Workout Engine
 
-The workout generator is where most of the interesting logic lives. For any given day it has to:
+For any given day, the workout generator has to:
 
 1. Pick the right muscle groups based on the user's split (Push/Pull/Legs, Upper/Lower, etc.)
 2. Filter the exercise pool to what matches the user's active Workout Space (the equipment available in their home gym, hotel room, or commercial gym)
@@ -65,7 +63,7 @@ The workout generator is where most of the interesting logic lives. For any give
 
 Workout Spaces ended up being a better model than a simple equipment checkbox. Instead of "I have dumbbells," users define named spaces — Home Gym, Hotel Room, Office — each with specific equipment and a set of available dumbbell weights. The generator filters by `exerciseMatchesSpace(exercise, spaceEquipment)` and then `clampToSpaceWeights(suggestion, spaceWeights)` adjusts weight suggestions to the nearest weight actually available. If you only have 25s and 35s, Rep suggests the 25s, not 28.
 
-The **double progression engine** in `lib/progression.ts` is straightforward in principle: you work within a rep range (say 8–12). Once you hit the top of that range for your target sets, you add weight and drop back to the bottom. The state per exercise tracks current weight, the rep range, how many sessions you've hit the top, and a ratchet to prevent the suggestion from dropping below what you've already proven you can lift. In practice this required care around edge cases — what happens after a deload, what happens when the user changes their rep target, what happens on the first session with an exercise.
+The **double progression engine** in `lib/progression.ts` works like this: you train within a rep range (say 8–12). Once you hit the top of that range across your target sets, it bumps the weight and drops you back to the bottom. The state per exercise tracks current weight, the rep range, sessions-at-ceiling, and a ratchet that prevents the suggestion from regressing below what you've already lifted. Each edge case needed explicit handling — first session with an exercise, what to do after a deload, how to respond when the user changes their rep-range target mid-cycle.
 
 **Deload detection** tracks a `currentCycleWeek` counter. When the user hits their configured cycle length (default 4 weeks), the app flags a deload — a week at reduced intensity. Users can skip it (the skip is recorded so the next detection window shifts correctly) or confirm it. After a deload, `currentCycleWeek` resets and progression state adjusts.
 
@@ -73,13 +71,13 @@ The **double progression engine** in `lib/progression.ts` is straightforward in 
 
 ## Navigation Was the Hardest Non-Obvious Problem
 
-Expo Router's file-based routing is elegant until you're deep into a screen hierarchy and something breaks in a way that's hard to reason about.
+Expo Router's file-based routing is elegant until you're deep into a screen hierarchy and something breaks silently.
 
 The core issue: all screens under `app/(tabs)/` are **siblings** in the Tabs navigator, not a stack. When you navigate from the History tab to a workout detail screen, you're not pushing onto a stack — you're switching to a sibling tab. `router.back()` from that screen doesn't go back to History, it goes to the root. And if the workout detail screen is registered with `href: null` (so it doesn't appear in the tab bar), it gets skipped by `router.back()` entirely.
 
 I hit this bug in a dozen forms before I understood the underlying cause. The rule I landed on: **never use bare `router.back()` after a mutating action from any tabs screen**. Always `router.navigate('/explicit/path')`. For screens that can be opened from multiple tabs, I pass a `returnTo` param and navigate to it on save or dismiss. This is more verbose but it's correct.
 
-The lesson: read the routing docs for your framework at the start, not after you've built ten screens and something is mysteriously going to the wrong place.
+Read the routing model docs before you build ten screens, not after.
 
 ---
 
@@ -93,9 +91,9 @@ Buddy sessions use a different pattern. Two users coordinate a shared session vi
 
 ## Shipping to the App Store
 
-Two months from first commit to App Store approval. This was my first iOS submission and the process is about what you'd expect: configure your signing certificates in Xcode, set up App Store Connect, submit builds via EAS, wait for review. The review itself took about 48 hours.
+Two months from first commit to App Store approval. This was my first iOS submission. The steps: configure signing certificates in Xcode, set up App Store Connect, submit builds via EAS, wait for review. Review took about 48 hours.
 
-The EAS (Expo Application Services) build pipeline made this significantly less painful than building and codesigning manually. My build command downloads the latest exercise JSON from Firebase Storage before bundling, so each production build ships with the current library rather than whatever was in the repo at the time I kicked off the build.
+EAS (Expo Application Services) handled the codesigning and build pipeline — one command submits a build, no manual Xcode archive step. My prebuild command also downloads the latest exercise JSON from Firebase Storage before bundling, so each production build ships with the current library rather than whatever was in the repo at the time I kicked off the build.
 
 One thing I'd do differently: I spent more time on features than on screenshots and metadata. The App Store listing is the first thing potential users see and it deserves the same attention as the code. I rushed it.
 
@@ -103,11 +101,9 @@ One thing I'd do differently: I spent more time on features than on screenshots 
 
 ## What I Learned
 
-**Local-first is underrated.** SQLite on device is fast, free, offline, and doesn't require a backend to do useful things. Firebase is great for the parts that need a server. But keeping the core data local means the app is useful even when connectivity is bad and there's no subscription required to access your own workout history.
+**Local-first made the app genuinely better.** SQLite on device is fast, free, and offline — no server round-trip to show your workout history. Firebase is right for the parts that cross device boundaries (social, auth, sync), but keeping core data local means the app works well even when connectivity doesn't, and there's no subscription required to access your own data.
 
 **Domain model first, schema second.** The `workouts`, `workout_sets`, and `exercises` tables are load-bearing. Changes to them require migrations and touch every part of the app. I should have spent more time nailing the schema before writing screens. I didn't, and I paid for it in migrations.
-
-**The navigation rules need to be documented early.** Expo Router's tabs-as-siblings model is a specific constraint. It's not obvious from the docs alone. Once I wrote it down explicitly — never use bare `router.back()` from a mutating action in a tabs screen — new screens were much faster to build correctly.
 
 **Versioning matters even before launch.** The exercise library versioning system felt like overkill while I was building it. But the first time I needed to fix a wrong muscle group assignment for a popular exercise and push it to devices without waiting for an app update, I was glad it was there.
 
@@ -115,6 +111,6 @@ One thing I'd do differently: I spent more time on features than on screenshots 
 
 ## What's Next
 
-The core tracking loop is solid. The things I want to build next are around the social and coaching layers: better buddy session UX, progress charts in the history view, and the trainer features that are already stubbed out but gated behind a flag. There's also more work to do on the exercise library — more exercises, better coverage of cardio and mobility, and cleaning up equipment classifications.
+Next up: progress charts in the history view, better buddy session UX, and the trainer dashboard that's already stubbed out behind a feature flag. The exercise library also has gaps — cardio coverage is thin and some equipment classifications need cleaning up.
 
-If you're into lifting, [give it a try](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272). It's free.
+Two months is enough time to build something real. It's not enough to build something finished. [Rep is on the App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) — free to download.
