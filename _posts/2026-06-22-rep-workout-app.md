@@ -54,18 +54,13 @@ The library is now maintained independently and ships with the app as a versione
 
 ## The Workout Engine
 
-For any given day, the workout generator has to:
+The generator is doing more than picking random exercises. It has to respect the user's muscle group schedule, their equipment, their training history, their stated preferences, and their current recovery state — and produce something that feels intentional rather than shuffled.
 
-1. Pick the right muscle groups based on the user's split (Push/Pull/Legs, Upper/Lower, etc.)
-2. Filter the exercise pool to what matches the user's active Workout Space (the equipment available in their home gym, hotel room, or commercial gym)
-3. Score and rank exercises against the user's training history, preferences, and recovery state
-4. Select a final set from the ranked pool
+Equipment handling ended up being more nuanced than expected. A simple "I have dumbbells" checkbox doesn't capture reality — someone's home gym has different constraints than their hotel room, which has different constraints than their commercial gym. The solution was letting users define named spaces for each environment, so the workout is always filtered to what's actually available in the place they're training. Weight suggestions account for what weights are physically in the room.
 
-Workout Spaces ended up being a better model than a simple equipment checkbox. Instead of "I have dumbbells," users define named spaces — Home Gym, Hotel Room, Office — each with specific equipment and a set of available dumbbell weights. The generator filters exercises to what's actually usable in that space, and weight suggestions get clamped to the nearest weight available. If you only have 25s and 35s, Rep suggests the 25s, not 28.
+**Double progression** is the underlying programming model: you work within a rep range, and once you've consistently hit the top of it, you add weight and work back up. Sounds simple — but getting the progression logic right across all the edge cases (deloads, exercise swaps, preference changes) took significantly longer than expected. There are a lot of ways to give someone a bad weight suggestion, and most of them are subtle.
 
-The **double progression engine** works like this: you train within a rep range (say 8–12). Once you hit the top of that range across your target sets, it bumps the weight and drops you back to the bottom. Per-exercise state tracks current weight, the rep range, how many sessions you've hit the ceiling, and a ratchet that prevents the suggestion from regressing below what you've already lifted. Each edge case needed explicit handling — first session with an exercise, what to do after a deload, how to respond when the user changes their rep-range target mid-cycle.
-
-**Deload detection** tracks where the user is in their training cycle. When they hit their configured cycle length, the app flags a deload — a week at reduced intensity. Users can skip it (the skip is recorded so the next detection window shifts correctly) or confirm it. Progression state adjusts accordingly.
+**Deload detection** tracks where the user is in their training cycle and flags when it's time to back off. Users can skip it if they feel good, but the logic accounts for that so the next window shifts correctly rather than immediately flagging again.
 
 ---
 
@@ -83,9 +78,9 @@ Read the routing model docs before you build ten screens, not after.
 
 ## The Social Layer and Cloud Functions
 
-The social feed uses a fan-out pattern. When you finish a workout, it syncs to Firestore. A Cloud Function picks it up and distributes it to each follower's feed. The security rules prevent clients from writing to anyone's feed directly — only the server-side function can do that, running with elevated permissions. This keeps the feed server-authoritative and closes the obvious abuse vector of injecting fake posts.
+The social feed is built on a fan-out model via Cloud Functions — workouts get distributed server-side rather than written directly by clients. This keeps the feed trustworthy regardless of what the client does.
 
-Buddy sessions use a different pattern. Two users coordinate through a shared Firestore document — both clients listen to it and see each other's exercise choices and set logs in real time. When the session ends, each user's workout is saved locally and synced independently. The coordination document just orchestrates — it doesn't own the workout data.
+Buddy sessions let two people train together in real time, seeing each other's exercise choices and set logs as they happen. When the session ends, each person's workout is theirs — stored locally and synced independently.
 
 ---
 
@@ -93,7 +88,7 @@ Buddy sessions use a different pattern. Two users coordinate through a shared Fi
 
 Two months from first commit to App Store approval. This was my first iOS submission. The steps: configure signing certificates in Xcode, set up App Store Connect, submit builds via EAS, wait for review. Review took about 48 hours.
 
-EAS (Expo Application Services) handled the codesigning and build pipeline — one command submits a build, no manual Xcode archive step. My prebuild command also downloads the latest exercise JSON from Firebase Storage before bundling, so each production build ships with the current library rather than whatever was in the repo at the time I kicked off the build.
+EAS (Expo Application Services) handled the codesigning and build pipeline — one command submits a build, no manual Xcode archive step. Each production build also pulls the latest exercise library before bundling, so the app ships current without a separate release cycle for data updates.
 
 One thing I'd do differently: I spent more time on features than on screenshots and metadata. The App Store listing is the first thing potential users see and it deserves the same attention as the code. I rushed it.
 
@@ -111,6 +106,6 @@ One thing I'd do differently: I spent more time on features than on screenshots 
 
 ## What's Next
 
-Next up: progress charts in the history view, better buddy session UX, and the trainer dashboard that's already stubbed out behind a feature flag. The exercise library also has gaps — cardio coverage is thin and some equipment classifications need cleaning up.
+Next up: richer progress tracking, improvements to the social and buddy session experience, and deeper coaching features. The exercise library also has gaps — cardio coverage is thin and there's more curation work to do.
 
 Two months is enough time to build something real. It's not enough to build something finished. [Rep is on the App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) — free to download.
