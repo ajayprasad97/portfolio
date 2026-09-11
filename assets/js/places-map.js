@@ -13,10 +13,26 @@
 
   var map = L.map(mapEl, { scrollWheelZoom: false });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 18
+  var CARTO_ATTRIBUTION =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
+    '&copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+  function tileUrlFor(theme) {
+    var style = theme === 'dark' ? 'dark_all' : 'light_all';
+    return 'https://{s}.basemaps.cartocdn.com/' + style + '/{z}/{x}/{y}{r}.png';
+  }
+
+  var tileLayer = L.tileLayer(tileUrlFor(document.documentElement.getAttribute('data-theme')), {
+    attribution: CARTO_ATTRIBUTION,
+    subdomains: 'abcd',
+    maxZoom: 19,
+    detectRetina: true
   }).addTo(map);
+
+  new MutationObserver(function () {
+    var theme = document.documentElement.getAttribute('data-theme');
+    tileLayer.setUrl(tileUrlFor(theme));
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   function iconFor(type) {
     return L.divIcon({

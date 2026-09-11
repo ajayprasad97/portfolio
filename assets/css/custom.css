@@ -356,10 +356,6 @@ h2 {
   color: var(--text);
 }
 
-[data-theme="dark"] .hikes-map .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
-}
-
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
