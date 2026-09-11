@@ -271,6 +271,76 @@ h2 {
   color: var(--muted);
 }
 
+.beyond-section {
+  padding-top: 2rem;
+}
+
+.beyond-text {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+
+.hikes-map {
+  width: 100%;
+  height: 420px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.hike-popup {
+  width: 220px;
+}
+
+.hike-popup img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 6px 6px 0 0;
+}
+
+.hike-popup-body {
+  padding: 0.6rem 0.2rem 0.2rem;
+}
+
+.hike-popup-body h4 {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.hike-popup-location {
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin: 0 0 0.15rem;
+  font-weight: 600;
+}
+
+.hike-popup-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0 0 0.4rem;
+}
+
+.hike-popup-note {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface);
+  color: var(--text);
+}
+
+[data-theme="dark"] .hikes-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
