@@ -1,0 +1,20 @@
+# Add one entry per hike. lat/lng can be grabbed from Google Maps
+# (right-click a spot -> the numbers that appear).
+# photo should point to an image in assets/img/hikes/ (create that folder).
+# These two are placeholders — replace with your own hikes/photos.
+
+- name: "Half Dome Trail"
+  location: "Yosemite National Park, CA"
+  lat: 37.7459
+  lng: -119.5332
+  date: "June 2024"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "16 miles round trip, cables to the summit. Worth every step."
+
+- name: "Angels Landing"
+  location: "Zion National Park, UT"
+  lat: 37.2690
+  lng: -112.9481
+  date: "September 2023"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "Chains, exposure, and one of the best views in the Southwest."
