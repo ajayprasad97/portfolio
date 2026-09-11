@@ -1,0 +1,41 @@
+# Add one entry per place. lat/lng can be grabbed from Google Maps
+# (right-click a spot -> the numbers that appear).
+# photo should point to an image in assets/img/places/ (create that folder).
+# type is either "hike" or "cityscape" — it controls the pin color and the filter.
+# These are placeholders — replace with your own hikes/cityscapes and photos.
+
+- name: "Half Dome Trail"
+  type: hike
+  location: "Yosemite National Park, CA"
+  lat: 37.7459
+  lng: -119.5332
+  date: "June 2024"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "16 miles round trip, cables to the summit. Worth every step."
+
+- name: "Angels Landing"
+  type: hike
+  location: "Zion National Park, UT"
+  lat: 37.2690
+  lng: -112.9481
+  date: "September 2023"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "Chains, exposure, and one of the best views in the Southwest."
+
+- name: "Skyline at Dusk"
+  type: cityscape
+  location: "New York, NY"
+  lat: 40.7128
+  lng: -74.0060
+  date: "March 2024"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "Golden hour from the rooftop, right as the lights came on."
+
+- name: "Shibuya Crossing"
+  type: cityscape
+  location: "Tokyo, Japan"
+  lat: 35.6595
+  lng: 139.7005
+  date: "November 2023"
+  photo: "/assets/img/cover-placeholder.svg"
+  note: "Long exposure of the crossing from the pedestrian bridge."
