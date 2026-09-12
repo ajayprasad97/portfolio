@@ -31,8 +31,13 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   {% endif %}
   <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}" />
+  <link rel="stylesheet" href="{{ '/assets/css/polish.css' | relative_url }}" />
+  {% if page.url == "/beyond-work/" %}
+  <link rel="stylesheet" href="{{ '/assets/css/beyond-work.css' | relative_url }}" />
+  {% endif %}
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="header">
     <nav class="nav">
       <div class="logo"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></div>
@@ -44,14 +49,14 @@
           <li><a href="{{ '/' | relative_url }}#contact">Contact</a></li>
         </ul>
         <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode">◐</button>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     {{ content }}
   </main>
 

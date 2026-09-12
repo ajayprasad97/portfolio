@@ -1,6 +1,6 @@
 # Ajay Prasad — Portfolio (Jekyll)
 
-Minimal Jekyll portfolio with a left‑sidebar project layout, optimized for GitHub Pages.
+Jekyll portfolio with a project notebook, a photo journal, light/dark themes, and progressive scroll reveals. Published from `main` through GitHub Pages.
 
 ## Quick Start (GitHub Pages)
 1. Push this repo to GitHub.
@@ -47,6 +47,18 @@ Body content below the front matter is the project description.
 
 ### Replace your photo
 - `assets/img/ajay.jpg`
+
+### Add a photo journal entry
+- Add photos and an optional activity screenshot under `assets/img/`.
+- Add an entry to `_data/places.yml` with `journal: true`, a unique `slug`, `name`, `location`, `date`, `lat`, `lng`, `eyebrow`, and `description`.
+- Each `photos` item has `src`, `alt`, and `caption`. Each `stats` item has `label` and `value`. `activity` links to the recorded activity screenshot.
+- Beyond Work renders journal entries in data-file order. Skyline Loop supplies the hero image.
+- Sample map pins retain their placeholder images and are explicitly labeled in popups.
+
+### Design and motion
+- `assets/css/polish.css` contains the shared design, homepage layout, and motion styles.
+- `assets/css/beyond-work.css` contains the photo journal layout.
+- `assets/js/ui.js` handles theme, navigation, and one-time scroll reveals. Reduced-motion preferences are respected; content remains visible without JavaScript.
 
 ## Structure
 - `_config.yml` — site config

@@ -307,6 +307,39 @@ h2 {
   padding: 0.6rem 0.2rem 0.2rem;
 }
 
+.place-popup-gallery {
+  display: flex;
+  gap: 6px;
+}
+
+.place-popup-gallery a {
+  flex: 1;
+  min-width: 0;
+}
+
+.place-popup-gallery img {
+  display: block;
+  height: auto;
+}
+
+.place-popup-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0.7rem 0 0;
+}
+
+.place-popup-stats dt {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.place-popup-stats dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .place-popup-body h4 {
   margin: 0 0 0.2rem;
   font-size: 1rem;

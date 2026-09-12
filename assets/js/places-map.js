@@ -13,26 +13,10 @@
 
   var map = L.map(mapEl, { scrollWheelZoom: false });
 
-  var CARTO_ATTRIBUTION =
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors ' +
-    '&copy; <a href="https://carto.com/attributions">CARTO</a>';
-
-  function tileUrlFor(theme) {
-    var style = theme === 'dark' ? 'dark_all' : 'light_all';
-    return 'https://{s}.basemaps.cartocdn.com/' + style + '/{z}/{x}/{y}{r}.png';
-  }
-
-  var tileLayer = L.tileLayer(tileUrlFor(document.documentElement.getAttribute('data-theme')), {
-    attribution: CARTO_ATTRIBUTION,
-    subdomains: 'abcd',
-    maxZoom: 19,
-    detectRetina: true
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
   }).addTo(map);
-
-  new MutationObserver(function () {
-    var theme = document.documentElement.getAttribute('data-theme');
-    tileLayer.setUrl(tileUrlFor(theme));
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   function iconFor(type) {
     return L.divIcon({
@@ -46,20 +30,42 @@
 
   var entries = places.map(function (place) {
     var type = place.type === 'cityscape' ? 'cityscape' : 'hike';
-    var marker = L.marker([place.lat, place.lng], { icon: iconFor(type) });
+    var marker = L.marker([place.lat, place.lng], { icon: iconFor(type), title: place.name, alt: place.name });
 
     var popup = document.createElement('div');
     popup.className = 'place-popup';
 
-    if (place.photo) {
-      var img = document.createElement('img');
-      img.src = place.photo;
-      img.alt = place.name || '';
-      popup.appendChild(img);
+    var photos = place.photos || (place.photo ? [{ src: place.photo, alt: place.name }] : []);
+    if (photos.length) {
+      var gallery = document.createElement('div');
+      gallery.className = 'place-popup-gallery';
+      photos.forEach(function (photo) {
+        var link = document.createElement('a');
+        link.href = photo.src;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        var img = document.createElement('img');
+        img.src = photo.src;
+        img.alt = photo.alt || place.name || '';
+        img.loading = 'lazy';
+        img.addEventListener('load', function () {
+          if (marker.getPopup() && marker.isPopupOpen()) marker.getPopup().update();
+        });
+        link.appendChild(img);
+        gallery.appendChild(link);
+      });
+      popup.appendChild(gallery);
     }
 
     var body = document.createElement('div');
     body.className = 'place-popup-body';
+
+    if (place.photo === '/assets/img/cover-placeholder.svg') {
+      var preview = document.createElement('p');
+      preview.className = 'place-popup-preview';
+      preview.textContent = 'Sample place';
+      body.appendChild(preview);
+    }
 
     var title = document.createElement('h4');
     title.textContent = place.name || '';
@@ -84,15 +90,32 @@
       body.appendChild(note);
     }
 
-    popup.appendChild(body);
-    marker.bindPopup(popup);
+    if (place.stats && place.stats.length) {
+      var stats = document.createElement('dl');
+      stats.className = 'place-popup-stats';
+      place.stats.forEach(function (stat) {
+        var item = document.createElement('div');
+        var label = document.createElement('dt');
+        label.textContent = stat.label;
+        var value = document.createElement('dd');
+        value.textContent = stat.value;
+        item.appendChild(label);
+        item.appendChild(value);
+        stats.appendChild(item);
+      });
+      body.appendChild(stats);
+    }
 
-    return { type: type, marker: marker };
+    popup.appendChild(body);
+    marker.bindPopup(popup, { maxHeight: 360 });
+
+    return { type: type, marker: marker, journal: place.journal };
   });
 
   var allMarkers = entries.map(function (e) { return e.marker; });
   var group = L.featureGroup(allMarkers).addTo(map);
-  map.fitBounds(group.getBounds().pad(0.3));
+  var journalMarkers = entries.filter(function (entry) { return entry.journal; }).map(function (entry) { return entry.marker; });
+  map.fitBounds((journalMarkers.length ? L.featureGroup(journalMarkers) : group).getBounds().pad(0.3), { maxZoom: 12 });
 
   function applyFilter(filter) {
     entries.forEach(function (entry) {
@@ -109,7 +132,7 @@
       .filter(function (entry) { return filter === 'all' || entry.type === filter; })
       .map(function (entry) { return entry.marker; });
     if (visible.length) {
-      map.fitBounds(L.featureGroup(visible).getBounds().pad(0.3));
+      map.fitBounds(L.featureGroup(visible).getBounds().pad(0.3), { maxZoom: 12 });
     }
   }
 
@@ -120,12 +143,12 @@
       if (!btn) return;
       filterRow.querySelectorAll('.filter-btn').forEach(function (b) {
         b.classList.remove('is-active');
+        b.setAttribute('aria-pressed', 'false');
       });
       btn.classList.add('is-active');
+      btn.setAttribute('aria-pressed', 'true');
       applyFilter(btn.dataset.filter);
     });
   }
 
-  mapEl.addEventListener('mouseenter', function () { map.scrollWheelZoom.enable(); });
-  mapEl.addEventListener('mouseleave', function () { map.scrollWheelZoom.disable(); });
 })();

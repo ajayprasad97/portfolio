@@ -1,8 +1,75 @@
 # Add one entry per place. lat/lng can be grabbed from Google Maps
 # (right-click a spot -> the numbers that appear).
-# photo should point to an image in assets/img/places/ (create that folder).
+# photos contains image paths, alt text, and captions from assets/img/.
 # type is either "hike" or "cityscape" — it controls the pin color and the filter.
-# These are placeholders — replace with your own hikes/cityscapes and photos.
+# journal: true includes the place in the Beyond Work photo journal.
+# Entries using cover-placeholder.svg are sample map pins.
+
+- name: "Skyline Loop"
+  type: hike
+  location: "Mount Rainier National Park, WA"
+  # Approximate pin at the Paradise trailhead.
+  lat: 46.786
+  lng: -121.735
+  date: "July 15, 2024"
+  journal: true
+  slug: skyline-loop
+  eyebrow: "A day at Rainier"
+  description: "Snow-covered ridges, distant peaks, and a marmot in the meadow. A few moments from a July day on Skyline Loop."
+  activity: "/assets/img/skyline-stats.png"
+  photos:
+    - src: "/assets/img/skyline.webp"
+      alt: "Snow-covered ridges and distant mountains from Skyline Loop"
+      caption: "A view worth the climb."
+    - src: "/assets/img/skyline-2.webp"
+      alt: "A marmot in an alpine meadow beside the snow on Skyline Loop"
+      caption: "A little company along the way."
+  stats:
+    - label: "Distance"
+      value: "5.59 mi"
+    - label: "Elevation gain"
+      value: "1,775 ft"
+    - label: "Moving time"
+      value: "2 h 52 m"
+    - label: "Total time"
+      value: "3 h 14 m"
+    - label: "Average pace"
+      value: "30:50 /mi"
+    - label: "Calories"
+      value: "1,496"
+
+- name: "Cascade Pass"
+  type: hike
+  location: "North Cascades National Park, WA"
+  # Approximate pin at Cascade Pass.
+  lat: 48.4672
+  lng: -121.0584
+  date: "July 12, 2024"
+  journal: true
+  slug: cascade-pass
+  eyebrow: "An afternoon in the North Cascades"
+  description: "A trail through green meadows and lingering snow, with rugged peaks all around. The Cascade Pass survey marker makes a fitting finish to the photo journal."
+  activity: "/assets/img/cascade-pass-stats.png"
+  photos:
+    - src: "/assets/img/cascade-pass.webp"
+      alt: "Snow-lined peaks and a green alpine valley at Cascade Pass"
+      caption: "The long way is the good way."
+    - src: "/assets/img/cascade-pass-2.webp"
+      alt: "Close-up of the Cascade Pass geological survey marker"
+      caption: "A small marker for a big landscape."
+  stats:
+    - label: "Distance"
+      value: "7.28 mi"
+    - label: "Elevation gain"
+      value: "1,788 ft"
+    - label: "Moving time"
+      value: "2 h 50 m"
+    - label: "Total time"
+      value: "2 h 58 m"
+    - label: "Average pace"
+      value: "23:24 /mi"
+    - label: "Calories"
+      value: "1,478"
 
 - name: "Half Dome Trail"
   type: hike
