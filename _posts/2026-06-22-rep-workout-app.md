@@ -1,6 +1,6 @@
 ---
 title: "Building Rep: A Workout App That Actually Programs Your Training"
-preview: "How I built and shipped a cross-platform workout tracker with a 1,100+ exercise library, smart progression, deload cycles, and social training."
+preview: "How I built and shipped a cross-platform workout tracker with adaptive programming, recovery insights, detailed progress tracking, and social training."
 cover: /assets/img/rep_cover.jpg
 featured: true
 tags:
@@ -19,7 +19,7 @@ links:
 
 Most workout apps solve a narrow problem. The simple ones are just logs — you enter weight and reps, they store it. The complex ones are subscription-gated personal trainer platforms that cost $30 a month and assume you want to be told exactly what to do by someone who doesn't know you. There's a gap in the middle: an app that understands programming principles, adapts to how you're actually training, and doesn't require a subscription to function.
 
-Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a double-progression engine to know when to add weight, and flags deload weeks when your fatigue catches up. Two months from first commit to App Store.
+Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a progression engine to know when to add weight, and schedules deload weeks when fatigue catches up. Since launch, it has grown to include wearable-powered recovery insights, personal records and strength projections, imports from other workout apps, custom training plans, challenges, and real-time social training.
 
 ---
 
@@ -29,17 +29,19 @@ You tell Rep your goal (strength, hypertrophy, or endurance), how many days per 
 
 When you log a set you record weight, reps, and RPE. After your last set you optionally note RIR (reps in reserve — how many more you had in the tank). Rep tracks this across sessions. When you've hit the top of your rep target for an exercise across enough sessions, it bumps the weight. When you've been pushing hard for several weeks, it flags a deload week.
 
-There's also a social layer — a feed where you can see friends' workouts, buddy sessions where you train together in real time, and a history view with a muscle recovery body map showing what's been worked recently.
+There's also a social layer — a feed where you can see friends' workouts, profiles and search for finding training partners, buddy sessions where you train together in real time, and challenges built around consistency, streaks, specific exercises, or a shared pact.
 
 ---
 
 ## Stack Decisions
 
-**React Native + Expo** was the right call for a cross-platform app — one codebase targeting both iOS and Android. The Expo Go loop — scan a QR code, see changes instantly on device — cut the edit-compile-run cycle to seconds. I didn't need bare workflow or any custom native modules, so managed Expo worked throughout. I used Expo Router 6 for file-based routing, which I'll come back to.
+**React Native + Expo** was the right call for a cross-platform app — one codebase targeting both iOS and Android. The Expo Go loop — scan a QR code, see changes instantly on device — cut the early edit-compile-run cycle to seconds. As the app grew, Apple HealthKit and Android Health Connect required development builds and native configuration, while Expo Application Services kept the build and submission pipeline manageable. I used Expo Router 6 for file-based routing, which I'll come back to.
 
 **expo-sqlite** for local storage was one of the best early decisions. The entire workout history, exercise library, progression state, and user settings live in a SQLite database on device. The app works offline. There's no subscription required to access your own data. Reads are synchronous and fast. The tradeoff is that schema changes require careful migrations, but that discipline is worth it.
 
 **Firebase** handles everything that needs a server: Auth, Firestore for social and buddy sessions, and Cloud Functions for feed fan-out. The split is clean: local SQLite for your personal data, Firebase for anything that crosses device boundaries.
+
+**HealthKit and Health Connect** provide sleep, resting heart rate, HRV, body composition, and active-calorie data. Rep turns those signals into recovery and readiness context, while completed workouts can be written back to the platform health store. Health data stays on the device rather than being uploaded to the social backend.
 
 **No external state management.** Just React's built-in state and Context for the two things that genuinely need to cross screens — the active workout session timer and the theme. I looked at Redux and Zustand early on and decided the overhead wasn't justified. Everything else is local to screens and re-queried on focus.
 
@@ -65,6 +67,8 @@ Equipment handling ended up being more nuanced than expected. A simple "I have d
 
 **Deload detection** tracks where the user is in their training cycle and flags when it's time to back off. Users can skip it if they feel good, but the logic accounts for that so the next window shifts correctly rather than immediately flagging again.
 
+The same history powers automatic personal-record detection, volume and estimated one-rep-max summaries, muscle-head-aware recovery suggestions, and a dampened 90-day strength projection. Users can also import Hevy, Strong, and Fitbod history, so the progression engine does not have to start from zero when they switch.
+
 ---
 
 ## Navigation Was the Hardest Non-Obvious Problem
@@ -84,6 +88,18 @@ Read the routing model docs before you build ten screens, not after.
 The social feed is built on a fan-out model via Cloud Functions — workouts get distributed server-side rather than written directly by clients. This keeps the feed trustworthy regardless of what the client does.
 
 Buddy sessions let two people train together in real time, seeing each other's exercise choices and set logs as they happen. When the session ends, each person's workout is theirs — stored locally and synced independently.
+
+The social layer now includes profiles, people search, likes and comments, workout share cards, friend-workout notifications, and privacy controls. Challenges add a second kind of accountability: friends can compete on consistency, an exercise score, or a streak, or commit to completing a buddy pact together.
+
+---
+
+## Growing the Product After Launch
+
+The first release proved the core loop. The changelog after launch is where the product became much more complete. Users can build custom splits and reusable workout templates, define multiple workout spaces with their own equipment and plate inventories, group exercises into supersets and circuits, and log warm-ups, cardio, RPE, RIR, and multi-stage drop sets without corrupting progression or PR calculations.
+
+The history experience grew alongside the logger: calendar activity, exercise-level history, recovery views, workout editing, CSV backup and restore, and imports from Hevy, Strong, and Fitbod. Six themes, Apple and Google sign-in, push notifications, offline operation, and regular exercise-library updates round out the app around the training engine.
+
+That expansion changed how I think about "finished." The hard part was no longer adding a feature in one screen; it was carrying each new concept through local storage, history, progression, sharing, social sync, backup and restore, and both mobile platforms. Drop sets are a good example: logging the extra legs was only the beginning. They also had to group correctly after reopening a workout, avoid false PRs, survive CSV export and import, display clearly in shared workout cards, and preserve the next progression recommendation.
 
 ---
 
