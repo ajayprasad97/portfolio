@@ -1,6 +1,6 @@
 ---
 title: "Building Rep: A Workout App That Actually Programs Your Training"
-preview: "How I built a React Native workout tracker with a 1,100+ exercise library, a double-progression engine, and deload cycles — and shipped it to the App Store in two months."
+preview: "How I built and shipped a cross-platform workout tracker with a 1,100+ exercise library, smart progression, deload cycles, and social training."
 cover: /assets/img/rep_cover.jpg
 featured: true
 tags:
@@ -9,9 +9,12 @@ tags:
   - Firebase
   - TypeScript
   - iOS
+  - Android
 links:
   - label: "Download on the App Store"
     url: "https://apps.apple.com/us/app/rep-the-workout-app/id6765540272"
+  - label: "Get it on Google Play"
+    url: "https://play.google.com/store/apps/details?id=com.reptheworkout.app"
 ---
 
 Most workout apps solve a narrow problem. The simple ones are just logs — you enter weight and reps, they store it. The complex ones are subscription-gated personal trainer platforms that cost $30 a month and assume you want to be told exactly what to do by someone who doesn't know you. There's a gap in the middle: an app that understands programming principles, adapts to how you're actually training, and doesn't require a subscription to function.
@@ -84,9 +87,11 @@ Buddy sessions let two people train together in real time, seeing each other's e
 
 ---
 
-## Shipping to the App Store
+## Shipping on iOS and Android
 
 Two months from first commit to App Store approval. This was my first iOS submission. The steps: configure signing certificates in Xcode, set up App Store Connect, submit builds via EAS, wait for review. Review took about 48 hours.
+
+The Android release followed on Google Play. Shipping both versions from the same React Native and Expo codebase validated the cross-platform decision: the workout engine, local database, progression logic, and social features stay shared while each platform keeps its native health integration and store release path.
 
 EAS (Expo Application Services) handled the codesigning and build pipeline — one command submits a build, no manual Xcode archive step. Each production build also pulls the latest exercise library before bundling, so the app ships current without a separate release cycle for data updates.
 
@@ -104,4 +109,4 @@ One thing I'd do differently: I spent more time on features than on screenshots 
 
 ---
 
-Two months is enough time to build something real. It's not enough to build something finished — there's a lot more in the pipeline. [Rep is on the App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) — free to download.
+Two months is enough time to build something real. It's not enough to build something finished — there's a lot more in the pipeline. Rep is free to download on the [App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) and [Google Play](https://play.google.com/store/apps/details?id=com.reptheworkout.app).

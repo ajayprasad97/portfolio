@@ -26,7 +26,7 @@ description: "Ajay Prasad — mechanical engineer, product builder, and curious 
     {% if featured %}
     <article class="home-feature" data-reveal>
       <a class="home-feature-image" href="{{ featured.url | relative_url }}" aria-label="{{ featured.title | escape }}"><img src="{{ featured.cover | relative_url }}" alt="Rep workout app showing exercise tracking and progression" loading="lazy" width="2048" height="683"><span class="feature-badge">Featured project</span></a>
-      <div class="home-feature-body"><div><p class="eyebrow">Personal project / iOS app</p><h3><a href="{{ featured.url | relative_url }}">Rep. Built for the next rep.</a></h3><p>{{ featured.preview }}</p></div><a class="round-link" href="{{ featured.url | relative_url }}" aria-label="Read the Rep case study">↗</a></div>
+      <div class="home-feature-body"><div><p class="eyebrow">Personal project / iOS &amp; Android</p><h3><a href="{{ featured.url | relative_url }}">Rep. Built for the next rep.</a></h3><p>{{ featured.preview }}</p></div><a class="round-link" href="{{ featured.url | relative_url }}" aria-label="Read the Rep case study">↗</a></div>
     </article>
     {% endif %}
     <div class="home-project-toolbar"><span class="eyebrow">The project notebook</span><span id="project-count" aria-live="polite"></span></div>
