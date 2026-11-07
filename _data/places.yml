@@ -1,7 +1,7 @@
 # Add one entry per place. lat/lng can be grabbed from Google Maps
 # (right-click a spot -> the numbers that appear).
 # photos contains image paths, alt text, and captions from assets/img/.
-# type is either "hike" or "cityscape" — it controls the pin color and the filter.
+# type is either "hike" or "cityscape": it controls the pin color and the filter.
 # journal: true includes the place in the Beyond Work photo journal.
 # Entries using cover-placeholder.svg are sample map pins.
 

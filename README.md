@@ -1,4 +1,4 @@
-# Ajay Prasad — Portfolio (Jekyll)
+# Ajay Prasad: Portfolio (Jekyll)
 
 Jekyll portfolio with a project notebook, a photo journal, light/dark themes, and progressive scroll reveals. Published from `main` through GitHub Pages.
 
@@ -61,11 +61,11 @@ Body content below the front matter is the project description.
 - `assets/js/ui.js` handles theme, navigation, and one-time scroll reveals. Reduced-motion preferences are respected; content remains visible without JavaScript.
 
 ## Structure
-- `_config.yml` — site config
-- `_layouts/default.html` — base layout
-- `_layouts/post.html` — project detail layout with sidebar
-- `_posts/` — project entries
-- `assets/css/custom.css` — site styling
+- `_config.yml`: site config
+- `_layouts/default.html`: base layout
+- `_layouts/post.html`: project detail layout with sidebar
+- `_posts/`: project entries
+- `assets/css/custom.css`: site styling
 
 ## Custom Domain
 Keep `CNAME` in the repo root. GitHub Pages will use it automatically.

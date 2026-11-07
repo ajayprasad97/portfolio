@@ -26,7 +26,7 @@ The goal was simple: make a chatbot that could answer these questions accurately
 
 The first thing I had to understand was that a large language model (LLM) like GPT-4o-mini doesn't "know" your documentation. It has general knowledge baked in from training, but it has never seen your company's internal support articles. If you ask it about a specific nTop feature, it might hallucinate something plausible-sounding but wrong.
 
-The solution is **Retrieval-Augmented Generation (RAG)** — a two-stage pattern:
+The solution is **Retrieval-Augmented Generation (RAG)**, a two-stage pattern:
 
 1. **Retrieve** the most relevant chunks of documentation for the user's question
 2. **Generate** a response using the LLM, but constrain it to only use what was retrieved
@@ -40,14 +40,14 @@ This keeps the LLM grounded. Instead of drawing on its general training, it read
 ### Step 1: Gathering and Preparing the Documentation
 
 I collected documentation from two sources:
-- **nTop Support** — nTop's support knowledge base
-- **nTop Learn** — Tutorial and training content
+- **nTop Support**: nTop's support knowledge base
+- **nTop Learn**: Tutorial and training content
 
 Both were converted to markdown files, each with YAML frontmatter containing the document title and its original URL. That URL turned out to be important it's what lets the chatbot show source links with every answer so users can verify what they're reading.
 
 ### Step 2: Chunking the Documents
 
-One of the first non-obvious problems I hit: you can't just dump entire documents into a vector database. Documents need to be broken into smaller, semantically coherent pieces — "chunks."
+One of the first non-obvious problems I hit: you can't just dump entire documents into a vector database. Documents need to be broken into smaller, semantically coherent pieces called "chunks."
 
 I used a two-pass approach:
 - First, split by Markdown headers (H1, H2, H3) to respect document structure
@@ -61,11 +61,11 @@ After processing all 1,212 documents, this produced **6,090 chunks** in about 32
 
 Each chunk was converted into a **vector embedding** using OpenAI's `text-embedding-3-small` model. An embedding is a list of numbers (a vector) that captures the semantic meaning of the text. Texts with similar meanings produce vectors that are close together in vector space.
 
-These embeddings were stored in **Chroma**, an open-source vector database. To avoid re-embedding the same content twice, each chunk was assigned an MD5 hash as its ID — so re-running the ingestion pipeline is safe and idempotent.
+These embeddings were stored in **Chroma**, an open-source vector database. To avoid re-embedding the same content twice, each chunk was assigned an MD5 hash as its ID, so re-running the ingestion pipeline is safe and idempotent.
 
 ### Step 4: The Chat Interface and Retrieval
 
-When a user types a question in the Streamlit web app, the same embedding model converts their question into a vector. Chroma then does a **similarity search** — finding the 3 stored chunks whose vectors are closest to the question vector.
+When a user types a question in the Streamlit web app, the same embedding model converts their question into a vector. Chroma then does a **similarity search**, finding the 3 stored chunks whose vectors are closest to the question vector.
 
 Those 3 chunks become the "context" fed to the LLM, along with a prompt that instructs it to answer only based on that context:
 
@@ -77,7 +77,7 @@ The key phrase is "ONLY on the following context." This is what prevents the mod
 
 Building the thing was one challenge. Knowing whether it worked was another.
 
-I put together a small golden dataset — 5 representative questions about nTop — and built an evaluation script that runs the full RAG pipeline on each one, capturing:
+I put together a small golden dataset (5 representative questions about nTop) and built an evaluation script that runs the full RAG pipeline on each one, capturing:
 - The generated answer
 - Which sources were retrieved
 - Token usage and cost
@@ -93,13 +93,13 @@ Every conversation is logged to disk: the question, the answer, which sources we
 
 ## What I Learned
 
-**Retrieval quality is everything.** The LLM can only work with what it's given. If the wrong chunks come back from the vector search, the answer will be wrong or incomplete — no matter how capable the model is. Most of the debugging I did was on the retrieval side, not the generation side.
+**Retrieval quality is everything.** The LLM can only work with what it's given. If the wrong chunks come back from the vector search, the answer will be wrong or incomplete, no matter how capable the model is. Most of the debugging I did was on the retrieval side, not the generation side.
 
 **Chunking strategy has real impact.** Splitting too aggressively loses context. Splitting too loosely makes retrieval less precise. The header-aware approach preserved document structure in a way that pure character splitting doesn't.
 
 **Deduplication matters at scale.** Without MD5-based chunk IDs, re-running the ingestion pipeline would duplicate everything in the database.
 
-**Metadata is what connects answers to sources.** Every chunk carries the original URL of its source document. Without that, you get answers without attribution — users have no way to verify or read more. Preserving metadata through the entire pipeline (ingestion → storage → retrieval → display) was a deliberate design choice.
+**Metadata is what connects answers to sources.** Every chunk carries the original URL of its source document. Without that, you get answers without attribution; users have no way to verify or read more. Preserving metadata through the entire pipeline (ingestion → storage → retrieval → display) was a deliberate design choice.
 
 **Cost is negligible at this scale.** Using GPT-4o-mini, a typical query costs around $0.00003-$0.00032. For a support chatbot answering dozens of queries a day, this is essentially free.
 
@@ -122,4 +122,4 @@ Every conversation is logged to disk: the question, the answer, which sources we
 
 The chatbot works well for direct factual questions that are well-covered in the documentation. 
 
-But as a foundation for understanding how RAG-based chatbots work — from raw documents to embedded vectors to a grounded LLM response — this project delivered exactly what I set out to learn.
+But as a foundation for understanding how RAG-based chatbots work, from raw documents to embedded vectors to a grounded LLM response, this project delivered exactly what I set out to learn.

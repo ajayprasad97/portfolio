@@ -19,7 +19,7 @@ Like most analytics problems in Product Support, this one started with a familia
 
 The data already existed. It just lived in different systems and had never been designed to answer *support-specific questions* together.
 
-This post is about how I used **BigQuery as the backbone** and **Google Sheets (via Connected Sheets)** as a lightweight dashboard—focused specifically on **product support decision-making**, not vanity metrics.
+This post is about how I used **BigQuery as the backbone** and **Google Sheets (via Connected Sheets)** as a lightweight dashboard, focused specifically on **product support decision-making**, not vanity metrics.
 
 ---
 
@@ -60,9 +60,9 @@ BigQuery worked well because it let me:
 The key was thinking in terms of **support outcomes**, not raw data.
 
 For example:
-- CSAT wasn't just an average—it was a signal
-- Ticket volume wasn't noise—it was demand on the support system
-- License usage wasn't telemetry—it was adoption context
+- CSAT wasn't just an average; it was a signal
+- Ticket volume wasn't noise; it was demand on the support system
+- License usage wasn't telemetry; it was adoption context
 
 Designing queries around these meanings made the pipeline easier to reason about and easier to evolve.
 
@@ -83,7 +83,7 @@ Instead of starting from a blank editor, I'd describe intent:
 
 > "Join Zendesk CSAT with account-level license usage and flag customers with declining satisfaction but stable ticket volume."
 
-This shifted my role from *syntax author* to *logic reviewer*. I still validated joins, filters, and edge cases—but iteration speed improved dramatically.
+This shifted my role from *syntax author* to *logic reviewer*. I still validated joins, filters, and edge cases, but iteration speed improved dramatically.
 
 LLMs didn't replace judgment. They removed mechanical friction.
 
@@ -104,7 +104,7 @@ Instead of normalizing everything manually, I used LLMs to answer higher-level q
 - Are customers confused, blocked, or hitting real bugs?
 - Is a pattern growing over time or isolated to a few accounts?
 
-The goal wasn't to replace quantitative metrics—but to **add qualitative context** on top of them.
+The goal wasn't to replace quantitative metrics, but to **add qualitative context** on top of them.
 
 ---
 
@@ -127,7 +127,7 @@ The workflow stayed intentionally simple:
    - CSAT  
    - license usage  
 
-This made it possible to see not just *that* tickets increased—but **why**.
+This made it possible to see not just *that* tickets increased, but **why**.
 
 ---
 
@@ -196,7 +196,7 @@ The dashboard needed to be **approachable, flexible, and fast**, not polished an
 A few takeaways that stuck with me:
 
 1. Support metrics are most powerful when combined with product usage  
-2. CSAT alone is not insight—it needs context  
+2. CSAT alone is not insight; it needs context  
 3. LLMs reduce friction, but clarity still matters most  
 4. Simple dashboards often get used more than perfect ones  
 
