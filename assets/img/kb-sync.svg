@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" role="img" aria-labelledby="t d">
+  <title id="t">Knowledge base sync pipeline</title>
+  <desc id="d">Zendesk articles, LearnDash courses, and private docs repos are pulled weekly by GitHub Actions, cleaned and tagged with source metadata, stored in a private Git repo, then embedded into a local vector database that an AI assistant searches to answer with source links.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f6f6f2"/>
+      <stop offset="100%" stop-color="#e7ece8"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f5f5b"/>
+    </marker>
+    <style>
+      text { font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif; fill: #141414; }
+      .eyebrow { font-size: 13px; letter-spacing: 2px; fill: #1f5f5b; font-weight: 600; }
+      .h { font-size: 30px; font-weight: 600; }
+      .label { font-size: 19px; font-weight: 600; }
+      .sub { font-size: 14.5px; fill: #5c5c5c; }
+      .step { font-size: 12px; letter-spacing: 1.5px; fill: #1f5f5b; font-weight: 600; }
+      .card { fill: #ffffff; stroke: #d9ddd8; stroke-width: 1.5; }
+      .accent { fill: #1f5f5b; }
+      .line { stroke: #1f5f5b; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="600" fill="url(#bg)"/>
+
+  <text class="eyebrow" x="50" y="70">DOCS AS CODE</text>
+  <text class="h" x="50" y="108">One private home for everything we know</text>
+
+  <!-- Sources -->
+  <text class="step" x="50" y="170">SOURCES</text>
+  <rect class="card" x="50" y="185" width="220" height="92" rx="8"/>
+  <text class="label" x="70" y="222">Zendesk</text>
+  <text class="sub" x="70" y="250">Support articles</text>
+
+  <rect class="card" x="50" y="295" width="220" height="92" rx="8"/>
+  <text class="label" x="70" y="332">LearnDash</text>
+  <text class="sub" x="70" y="360">Courses and lessons</text>
+
+  <rect class="card" x="50" y="405" width="220" height="92" rx="8"/>
+  <text class="label" x="70" y="442">Git repos</text>
+  <text class="sub" x="70" y="470">Technical docs</text>
+
+  <!-- Arrows from sources -->
+  <path class="line" d="M270 231 H295 V341 H322" marker-end="url(#arrow)"/>
+  <path class="line" d="M270 341 H322"/>
+  <path class="line" d="M270 451 H295 V341"/>
+
+  <!-- Sync and clean -->
+  <text class="step" x="330" y="170">EVERY SUNDAY</text>
+  <rect class="card" x="330" y="240" width="210" height="202" rx="8"/>
+  <rect class="accent" x="330" y="240" width="210" height="6" rx="3"/>
+  <text class="label" x="350" y="282">Sync and clean</text>
+  <text class="sub" x="350" y="310">GitHub Actions</text>
+  <text class="sub" x="350" y="346">Strip HTML</text>
+  <text class="sub" x="350" y="372">Tables to plain text</text>
+  <text class="sub" x="350" y="398">Tag source link</text>
+  <text class="sub" x="350" y="424">Skip drafts</text>
+
+  <path class="line" d="M540 341 H582" marker-end="url(#arrow)"/>
+
+  <!-- Private repo -->
+  <text class="step" x="590" y="170">REVIEWED</text>
+  <rect class="card" x="590" y="240" width="200" height="202" rx="8"/>
+  <rect class="accent" x="590" y="240" width="200" height="6" rx="3"/>
+  <text class="label" x="610" y="282">Private repo</text>
+  <text class="sub" x="610" y="310">Single source of truth</text>
+  <text class="sub" x="610" y="346">Changes land as</text>
+  <text class="sub" x="610" y="370">a pull request</text>
+  <text class="sub" x="610" y="406">Full version history</text>
+
+  <path class="line" d="M790 341 H832" marker-end="url(#arrow)"/>
+
+  <!-- Assistant -->
+  <text class="step" x="840" y="170">ANSWERS</text>
+  <rect class="card" x="840" y="240" width="210" height="202" rx="8"/>
+  <rect class="accent" x="840" y="240" width="210" height="6" rx="3"/>
+  <text class="label" x="860" y="282">AI assistant</text>
+  <text class="sub" x="860" y="310">Local vector database</text>
+  <text class="sub" x="860" y="346">Finds the right docs</text>
+  <text class="sub" x="860" y="372">for each question</text>
+  <text class="sub" x="860" y="408">Answers with links</text>
+  <text class="sub" x="860" y="432">to the source</text>
+</svg>

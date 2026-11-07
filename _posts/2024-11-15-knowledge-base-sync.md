@@ -1,15 +1,12 @@
 ---
 title: "Automated Knowledge-Base Sync Pipeline"
 preview: "A weekly GitHub pipeline that pulls our support articles, courses, and docs into one clean, private repo an AI assistant can use."
-cover: /assets/img/kb-sync.webp
+cover: /assets/img/kb-sync.svg
 featured: true
 tags:
   - Automation
   - Docs
   - Tooling
-links:
-  - label: "Case Study"
-    url: "#"
 ---
 At nTop, the answers to most customer questions already existed. The problem was where they lived: support articles in Zendesk, courses in LearnDash, and technical docs spread across a few private Git repos. If you wanted the full picture, you had to check all three.
 
