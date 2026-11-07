@@ -1,205 +1,60 @@
 ---
-title: "Figuring Out BigQuery, Connected Sheets, and a Product Support Dashboard That Actually Worked"
-preview: "SQL + BigQuery pipelines for licensing usage insights and product analytics."
+title: "A Support Dashboard People Actually Opened"
+preview: "Joining Zendesk, Salesforce, and licensing data in BigQuery to see which customers need help, and why."
 cover: /assets/img/cover-placeholder.svg
 tags:
   - Data
   - Analytics
   - SQL
 ---
-### Context
+This started with a question I hear a lot in support: *can we get one view of customer health that actually helps us prioritize?*
 
-*This was a lightweight internal project aimed at helping Product Support teams better understand customer health and support demand by connecting existing warehouse data. The goal wasn't to build a full BI solution, but to answer practical support questions around CSAT, product adoption, and ticket deflection using BigQuery, Connected Sheets, and selective use of LLMs.*
+The data was already there. Zendesk, Salesforce, and our licensing data were all synced into the warehouse. They just had never been put together to answer support questions. This was a small internal project to change that, using BigQuery for the heavy lifting and Google Sheets (through Connected Sheets) as the dashboard. Not a full BI rollout, just something useful.
 
----
+## Three sources, one picture
 
-Like most analytics problems in Product Support, this one started with a familiar ask:
+- **Zendesk:** CSAT, ticket volume, reopen rates, response times.
+- **Salesforce:** account tier, segment, owner, renewal dates.
+- **Licensing:** what each customer is entitled to, and what they actually use.
 
-> "Can we get a single view of customer health that actually helps support teams prioritize better?"
+Each one on its own answers a narrow question. Together they start to explain what's going on with an account.
 
-The data already existed. It just lived in different systems and had never been designed to answer *support-specific questions* together.
+## Questions first, charts later
 
-This post is about how I used **BigQuery as the backbone** and **Google Sheets (via Connected Sheets)** as a lightweight dashboard—focused specifically on **product support decision-making**, not vanity metrics.
+Before writing any SQL, I wrote down what support actually wanted to know:
 
----
+- Which customers with low CSAT also aren't using what they're paying for?
+- Do certain tiers or segments consistently send more tickets?
+- Do accounts coming up for renewal show early warning signs, like a CSAT drop or a ticket spike?
+- Are we spending a lot of support time on accounts that barely use the product?
+- Which "support issues" are really onboarding or UX gaps?
 
-## The Data Was Already There (Just Not Support-Ready)
+Once those were clear, it was obvious how the data needed to line up.
 
-All the sources were already synced into our warehouse:
+## Building it in BigQuery
 
-- **Zendesk** → CSAT, ticket volume, reopen rates, response times  
-- **Salesforce** → account tier, segment, ownership, renewal timelines  
-- **Internal licensing data** → feature entitlements and actual product usage  
+The main work was rolling everything up to the account level: tickets and CSAT per account, Salesforce details joined on, and license usage summarized by month. It helped to think about what each number meant rather than what it was. A CSAT score is a signal. Ticket volume is demand on the team. License usage tells you how much a customer has actually adopted the product. Designing the queries around those ideas made them easier to reason about and change later.
 
-Individually, each dataset answered a narrow question. Together, they helped answer the questions Product Support teams actually care about.
+## Where AI helped
 
----
+AI tools changed how I wrote the SQL. If you know your tables and what decision you're trying to support, writing the query stops being the hard part. Instead of starting from a blank editor, I'd describe what I wanted, something like *"join Zendesk CSAT with account-level license usage and flag customers whose satisfaction is dropping while ticket volume stays flat,"* and then review what came back. I still checked every join, filter, and edge case myself. I just got there a lot faster.
 
-## Asking the Right Product Support Questions
+I also used an LLM to read the tickets themselves. Tags only tell you so much, and most of the useful detail is buried in long descriptions and back-and-forth replies. So I'd filter tickets in BigQuery by feature, time window, or segment, pass a sample to an LLM, and ask it to group similar issues and summarize what kept coming up. Is this confusion, a blocker, or a real bug? Is it growing, or just a couple of accounts? Those summaries sat next to the numbers, so we could see not just *that* tickets went up, but why.
 
-Instead of starting with charts, I started with **support-driven questions**, such as:
+## The chatbot question
 
-- Which customers with **low CSAT** are also **not fully using the product they're licensed for**?
-- Are certain **account tiers or segments** consistently generating higher ticket volume?
-- Do customers approaching renewal show **early support signals** (CSAT drops, ticket spikes)?
-- Are we spending disproportionate support effort on accounts with **low product adoption**?
-- Which tickets look like "support issues" but are really **onboarding or UX gaps**?
+Clustering tickets by what people were actually asking showed how repetitive a lot of support really is. The same "how do I…" questions, the same setup confusion, the same workflows tripping people up across different accounts.
 
-Once these questions were clear, it became obvious how the data needed to line up.
+That let us ask a better question. Instead of *"should we add an AI chatbot?"* it became *"which of these tickets are purely informational, and how many could a chatbot or better self-serve docs realistically handle?"* We could separate those from tickets that need real investigation and track the split over time. (I wrote separately about building a [support chatbot](/projects/support-chatbot/).)
 
----
+## Why Sheets
 
-## BigQuery as the Support Intelligence Layer
+Once the BigQuery views were solid, Connected Sheets was the last mile. It runs live queries with no exports, and anyone on the team could slice it by segment or account without learning a BI tool. For a support team, approachable beat polished.
 
-BigQuery worked well because it let me:
+## What I took away
 
-- Normalize support events (tickets, CSAT) to an **account-level view**
-- Join Salesforce context without duplicating logic
-- Aggregate licensing data at a **support-relevant grain** (monthly, per account)
-
-The key was thinking in terms of **support outcomes**, not raw data.
-
-For example:
-- CSAT wasn't just an average—it was a signal
-- Ticket volume wasn't noise—it was demand on the support system
-- License usage wasn't telemetry—it was adoption context
-
-Designing queries around these meanings made the pipeline easier to reason about and easier to evolve.
-
----
-
-## How LLMs Changed the Way I Build Support Analytics
-
-One thing that genuinely changed my workflow was using **LLMs**.
-
-If you:
-- understand your support metrics,
-- know what your tables represent,
-- and are clear about the decision you're trying to enable,
-
-then SQL stops being the hard part.
-
-Instead of starting from a blank editor, I'd describe intent:
-
-> "Join Zendesk CSAT with account-level license usage and flag customers with declining satisfaction but stable ticket volume."
-
-This shifted my role from *syntax author* to *logic reviewer*. I still validated joins, filters, and edge cases—but iteration speed improved dramatically.
-
-LLMs didn't replace judgment. They removed mechanical friction.
-
----
-
-## Using LLMs to Synthesize Support Ticket Data
-
-One interesting thing I've been experimenting with is using **LLMs to synthesize support ticket data around specific topics**.
-
-Support tickets are rich, but messy. Even with tagging, much of the signal lives in:
-- long descriptions,
-- follow-up replies,
-- different ways customers describe the same problem.
-
-Instead of normalizing everything manually, I used LLMs to answer higher-level questions like:
-
-- What recurring themes show up in tickets related to a specific feature?
-- Are customers confused, blocked, or hitting real bugs?
-- Is a pattern growing over time or isolated to a few accounts?
-
-The goal wasn't to replace quantitative metrics—but to **add qualitative context** on top of them.
-
----
-
-## How This Fits Into the Data Pipeline
-
-The workflow stayed intentionally simple:
-
-1. Use BigQuery to filter tickets by:
-   - topic or feature area  
-   - time window  
-   - account segment or tier  
-
-2. Pass sampled or grouped ticket text to an LLM to:
-   - summarize recurring themes  
-   - cluster similar issues  
-   - flag emerging patterns  
-
-3. Store the synthesized output alongside metrics like:
-   - ticket volume  
-   - CSAT  
-   - license usage  
-
-This made it possible to see not just *that* tickets increased—but **why**.
-
----
-
-## From Repetitive Questions to Chatbot Deflection Potential
-
-One practical outcome of this approach was understanding **how repetitive our support questions really are**.
-
-When you look at tickets individually, everything feels unique. But when clustered by intent, patterns become obvious:
-- repeated "how do I…" questions,
-- recurring setup or configuration confusion,
-- the same workflows causing friction across accounts.
-
-This allowed us to ask a more grounded question:
-
-> *If we introduced an AI chatbot or improved self-serve flows, what percentage of tickets could realistically be deflected?*
-
-Instead of guessing, we could:
-- identify tickets that were **purely informational**,
-- separate them from cases requiring investigation or judgment,
-- quantify deflection potential over time.
-
-This reframed chatbot conversations from:
-> "Should we add AI support?"
-
-to:
-> "An AI assistant could realistically handle ~X% of tickets in these categories."
-
----
-
-## Why This Matters for Product Support (and Product)
-
-From a Product Support perspective, this helped with:
-
-- **Capacity planning**  
-  Knowing what's repetitive vs complex makes forecasting more accurate.
-
-- **Documentation and onboarding prioritization**  
-  Repeated questions are signals, not user failure.
-
-- **More credible AI investments**  
-  Chatbots become targeted tools, not blanket solutions.
-
-It also created a better bridge to Product:
-- repetitive issues → docs, UX, or automation fixes  
-- non-repetitive issues → deeper product or reliability work  
-
-In other words, LLMs helped highlight **which tickets shouldn't exist in the first place**.
-
----
-
-## Why Connected Sheets Was the Right Final Step
-
-Once the BigQuery views were solid, **Connected Sheets** worked perfectly as the last mile:
-
-- Live queries without manual exports
-- Easy slicing by segment or account
-- Low friction for non-technical stakeholders
-
-For Product Support teams, this mattered.  
-The dashboard needed to be **approachable, flexible, and fast**, not polished and locked behind a BI tool.
-
----
-
-## What This Taught Me About Product Support Analytics
-
-A few takeaways that stuck with me:
-
-1. Support metrics are most powerful when combined with product usage  
-2. CSAT alone is not insight—it needs context  
-3. LLMs reduce friction, but clarity still matters most  
-4. Simple dashboards often get used more than perfect ones  
-
-If you start with a clear support outcome in mind, you can always backtrack and build the right pipeline.
-
-Sometimes all it takes is the right joins, the right questions, and a dashboard people actually open.
+- Support numbers mean a lot more next to product usage.
+- CSAT alone isn't an answer. It needs context.
+- AI makes the mechanical parts faster, but you still need to know what you're asking.
+- A simple dashboard people actually open beats a perfect one nobody does.
+- Repeated questions aren't user failure. They point to docs, UX, or onboarding that could be better, which is useful to hand to the product team.

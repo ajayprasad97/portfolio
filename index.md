@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Home
-description: "Ajay Prasad — mechanical engineer, product builder, and curious problem solver."
+description: "Ajay Prasad: mechanical engineer, product builder, and curious problem solver."
 ---
 
 <div class="home-page">
@@ -18,7 +18,7 @@ description: "Ajay Prasad — mechanical engineer, product builder, and curious 
       <span class="portrait-note" aria-hidden="true">Always curious ↗</span>
     </figure>
   </section>
-  <div class="home-now"><span class="eyebrow">On my mind lately</span><p>Simpler support workflows. Thoughtful product experiences. Small improvements that add up.</p><a href="#projects" aria-label="Explore current work">↓</a></div>
+  <div class="home-now"><span class="eyebrow">On my mind lately</span><p>Helping admins get their teams up and running faster. Small improvements that add up.</p><a href="#projects" aria-label="Explore current work">↓</a></div>
 
   <section class="home-projects" id="projects" aria-labelledby="work-title">
     <div class="home-section-heading" data-reveal><div><p class="eyebrow">01 / Selected work</p><h2 id="work-title">Ideas, made <em>real.</em></h2></div><p>Things I've built, improved,<br>and learned along the way.</p></div>
@@ -53,7 +53,7 @@ description: "Ajay Prasad — mechanical engineer, product builder, and curious 
 
   <section class="home-about" id="about" aria-labelledby="about-title" data-reveal>
     <div><p class="eyebrow">02 / The person behind the projects</p><h2 id="about-title">An engineer's mind.<br>A builder's <em>curiosity.</em></h2></div>
-    <div class="home-about-copy"><p>I'm a mechanical engineer working in technical support, helping customers untangle complex engineering workflows. It gives me a front-row seat to how people actually use products — and where things could work better.</p><p>That's what gets me building. Sometimes it's a tool that saves a few clicks. Sometimes it's an app that grows into something bigger. I like turning a frustrating experience into a thoughtful one.</p><div class="about-principles"><span>Understand the problem.</span><span>Build something useful.</span><span>Keep making it better.</span></div></div>
+    <div class="home-about-copy"><p>I'm a mechanical engineer working in technical support, helping customers untangle complex engineering workflows. It gives me a front-row seat to how people actually use products, and where things could work better.</p><p>Alongside that, I've taken on the admin experience: helping the people who roll out our software get their teams set up quickly, and making sure help is easy to find when they get stuck.</p><div class="about-focus" aria-label="Platforms I've helped launch"><p class="eyebrow">Platforms I've helped launch</p><ul><li><strong><a href="https://docs.ntop.com" target="_blank" rel="noopener">docs.ntop.com</a></strong><span>One consolidated home for nTop's documentation.</span></li><li><strong><a href="https://community.ntop.com" target="_blank" rel="noopener">community.ntop.com</a></strong><span>A peer community where users share workflows and help each other.</span></li><li><strong>nTop Assistant</strong><span>An in-app assistant that answers questions straight from our docs, powered by a docs MCP server. It started as <a href="{{ '/projects/support-chatbot/' | relative_url }}">a prototype I built</a>.</span></li></ul></div><p>That's what gets me building. Sometimes it's a tool that saves a few clicks. Sometimes it's an app that grows into something bigger. I like turning a frustrating experience into a thoughtful one.</p><div class="about-principles"><span>Understand the problem.</span><span>Build something useful.</span><span>Keep making it better.</span></div></div>
   </section>
 
   <section class="home-outside" aria-labelledby="outside-title" data-reveal>
