@@ -45,12 +45,14 @@ A centralized utility module, cleanup_utils.py, functions as a middleware layer.
 
 **The Importance of YAML Metadata:** The inclusion of YAML Front Matter is critical for establishing data provenance. By annotating each file with its source Uniform Resource Locator (URL), the system enables the conversational agent to provide verifiable citations.
 
+```yaml
 ---
 title: "How to Create a Gyroid Lattice"
 source_platform: "zendesk"
-source_url: "[https://support.ntop.com/hc/en-us/articles/](https://support.ntop.com/hc/en-us/articles/)..."
+source_url: "https://support.ntop.com/hc/en-us/articles/..."
 updated_at: "2025-11-23"
 ---
+```
 
 ## Protocols for Handling Proprietary Information
 
