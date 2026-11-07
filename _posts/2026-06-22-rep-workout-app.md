@@ -1,6 +1,6 @@
 ---
 title: "Building Rep: A Workout App That Actually Programs Your Training"
-preview: "How I built and shipped a cross-platform workout tracker with adaptive programming, recovery insights, detailed progress tracking, and social training."
+preview: "How I built and shipped a cross-platform workout tracker, now used by 75+ people, with adaptive programming, recovery insights, progress tracking, and social training."
 cover: /assets/img/rep_cover.jpg
 featured: true
 tags:
@@ -19,7 +19,7 @@ links:
 
 Most workout apps solve a narrow problem. The simple ones are just logs: you enter weight and reps, they store it. The complex ones are subscription-gated personal trainer platforms that cost $30 a month and assume you want to be told exactly what to do by someone who doesn't know you. There's a gap in the middle: an app that understands programming principles, adapts to how you're actually training, and doesn't require a subscription to function.
 
-Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a progression engine to know when to add weight, and schedules deload weeks when fatigue catches up. Since launch, it has grown to include wearable-powered recovery insights, personal records and strength projections, imports from other workout apps, custom training plans, challenges, and real-time social training.
+Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a progression engine to know when to add weight, and schedules deload weeks when fatigue catches up. It's now on iOS and Android with 75+ users, and since launch it has grown to include wearable-powered recovery insights, personal records and strength projections, imports from other workout apps, custom training plans, challenges, and real-time social training.
 
 ## The Core Loop
 
