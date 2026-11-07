@@ -70,6 +70,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outl
 .home-about-copy > p { font-size: .9rem; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
 .about-principles { display: flex; flex-direction: column; gap: 8px; padding-top: 6px; font-size: .75rem; color: var(--accent); }
 .about-principles span::before { content: '↗'; margin-right: 12px; }
+.about-focus { margin: 4px 0 28px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
+.about-focus .eyebrow { margin-bottom: 14px; }
+.about-focus ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.about-focus li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 16px; align-items: baseline; font-size: .8rem; line-height: 1.6; }
+.about-focus li strong { color: var(--accent); font-weight: 600; }
+.about-focus li span { color: var(--muted); }
 .home-page .home-outside { display: grid; grid-template-columns: 1fr 1fr; background: #e9ede4; border-radius: 4px; overflow: hidden; }
 .outside-image { overflow: hidden; }
 .outside-image img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; object-position: center 65%; transition: transform .6s; }
@@ -118,6 +124,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outl
   .home-project-grid { grid-template-columns: 1fr; }
   .home-page .notebook-card { padding: 24px; }
   .home-page .home-about { grid-template-columns: 1fr; padding: 48px 0; gap: 26px; }
+  .about-focus { padding: 18px; }
+  .about-focus li { grid-template-columns: 1fr; gap: 2px; }
   .home-page .home-outside { grid-template-columns: 1fr; }
   .outside-image img { aspect-ratio: 4/3; max-height: 380px; }
   .outside-copy { padding: 32px 26px; }
