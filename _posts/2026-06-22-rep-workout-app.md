@@ -21,21 +21,17 @@ Most workout apps solve a narrow problem. The simple ones are just logs: you ent
 
 Rep fills that gap. It generates daily workouts from a library of 1,100+ exercises, logs sets with RPE and RIR, runs a progression engine to know when to add weight, and schedules deload weeks when fatigue catches up. Since launch, it has grown to include wearable-powered recovery insights, personal records and strength projections, imports from other workout apps, custom training plans, challenges, and real-time social training.
 
----
-
 ## The Core Loop
 
 You tell Rep your goal (strength, hypertrophy, or endurance), how many days per week you train, what equipment you have access to, and your training age. From there it generates a workout every day: real exercises matched to your muscle group schedule, filtered by what you actually have available.
 
 When you log a set you record weight, reps, and RPE. After your last set you optionally note RIR (reps in reserve: how many more you had in the tank). Rep tracks this across sessions. When you've hit the top of your rep target for an exercise across enough sessions, it bumps the weight. When you've been pushing hard for several weeks, it flags a deload week.
 
-There's also a social layer: a feed where you can see friends' workouts, profiles and search for finding training partners, buddy sessions where you train together in real time, and challenges built around consistency, streaks, specific exercises, or a shared pact.
-
----
+There's also a social side: a feed of friends' workouts, profiles and search for finding training partners, real-time buddy sessions, and challenges built around consistency, streaks, specific exercises, or a shared pact.
 
 ## Stack Decisions
 
-**React Native + Expo** was the right call for a cross-platform app, one codebase targeting both iOS and Android. The Expo Go loop (scan a QR code, see changes instantly on device) cut the early edit-compile-run cycle to seconds. As the app grew, Apple HealthKit and Android Health Connect required development builds and native configuration, while Expo Application Services kept the build and submission pipeline manageable. I used Expo Router 6 for file-based routing, which I'll come back to.
+**React Native + Expo** gave me one codebase for iOS and Android. The Expo Go loop (scan a QR code, see changes instantly on your phone) kept early iteration down to seconds. Later, HealthKit and Health Connect needed development builds and native configuration, and Expo Application Services kept builds and submissions manageable. I used Expo Router 6 for file-based routing, which I'll come back to.
 
 **expo-sqlite** for local storage was one of the best early decisions. The entire workout history, exercise library, progression state, and user settings live in a SQLite database on device. The app works offline. There's no subscription required to access your own data. Reads are synchronous and fast. The tradeoff is that schema changes require careful migrations, but that discipline is worth it.
 
@@ -43,9 +39,7 @@ There's also a social layer: a feed where you can see friends' workouts, profile
 
 **HealthKit and Health Connect** provide sleep, resting heart rate, HRV, body composition, and active-calorie data. Rep turns those signals into recovery and readiness context, while completed workouts can be written back to the platform health store. Health data stays on the device rather than being uploaded to the social backend.
 
-**No external state management.** Just React's built-in state and Context for the two things that genuinely need to cross screens: the active workout session timer and the theme. I looked at Redux and Zustand early on and decided the overhead wasn't justified. Everything else is local to screens and re-queried on focus.
-
----
+**No external state management.** Just React's built-in state and Context for the two things that need to cross screens: the active workout session timer and the theme. I looked at Redux and Zustand early on and decided the overhead wasn't justified. Everything else is local to screens and re-queried on focus.
 
 ## The Exercise Library
 
@@ -55,21 +49,17 @@ The upstream data covered names, muscle groups, and equipment types, but was mis
 
 The library is now maintained independently and ships with the app as a versioned payload. The app checks the version on each launch and pulls down updates if anything has changed, so I can push corrections to existing users without waiting for an App Store update. There's also an admin queue in the app for reviewing user-submitted exercises before they get added to the library.
 
----
-
 ## The Workout Engine
 
 The generator is doing more than picking random exercises. It has to respect the user's muscle group schedule, their equipment, their training history, their stated preferences, and their current recovery state, and produce something that feels intentional rather than shuffled.
 
 Equipment handling ended up being more nuanced than expected. A simple "I have dumbbells" checkbox doesn't capture reality: someone's home gym has different constraints than their hotel room, which has different constraints than their commercial gym. The solution was letting users define named spaces for each environment, so the workout is always filtered to what's actually available in the place they're training. Weight suggestions account for what weights are physically in the room.
 
-**Double progression** is the underlying programming model: you work within a rep range, and once you've consistently hit the top of it, you add weight and work back up. Sounds simple, but getting the progression logic right across all the edge cases (deloads, exercise swaps, preference changes) took significantly longer than expected. There are a lot of ways to give someone a bad weight suggestion, and most of them are subtle.
+**Double progression** is the underlying programming model: you work within a rep range, and once you've consistently hit the top of it, you add weight and work back up. Sounds simple, but getting the progression logic right across all the edge cases (deloads, exercise swaps, preference changes) took much longer than I expected. There are a lot of ways to give someone a bad weight suggestion, and most of them are subtle.
 
 **Deload detection** tracks where the user is in their training cycle and flags when it's time to back off. Users can skip it if they feel good, but the logic accounts for that so the next window shifts correctly rather than immediately flagging again.
 
 The same history powers automatic personal-record detection, volume and estimated one-rep-max summaries, muscle-head-aware recovery suggestions, and a dampened 90-day strength projection. Users can also import Hevy, Strong, and Fitbod history, so the progression engine does not have to start from zero when they switch.
-
----
 
 ## Navigation Was the Hardest Non-Obvious Problem
 
@@ -81,8 +71,6 @@ I hit this bug in a dozen forms before I understood the underlying cause. The ru
 
 Read the routing model docs before you build ten screens, not after.
 
----
-
 ## The Social Layer and Cloud Functions
 
 The social feed is built on a fan-out model via Cloud Functions: workouts get distributed server-side rather than written directly by clients. This keeps the feed trustworthy regardless of what the client does.
@@ -91,17 +79,13 @@ Buddy sessions let two people train together in real time, seeing each other's e
 
 The social layer now includes profiles, people search, likes and comments, workout share cards, friend-workout notifications, and privacy controls. Challenges add a second kind of accountability: friends can compete on consistency, an exercise score, or a streak, or commit to completing a buddy pact together.
 
----
-
 ## Growing the Product After Launch
 
 The first release proved the core loop. The changelog after launch is where the product became much more complete. Users can build custom splits and reusable workout templates, define multiple workout spaces with their own equipment and plate inventories, group exercises into supersets and circuits, and log warm-ups, cardio, RPE, RIR, and multi-stage drop sets without corrupting progression or PR calculations.
 
-The history experience grew alongside the logger: calendar activity, exercise-level history, recovery views, workout editing, CSV backup and restore, and imports from Hevy, Strong, and Fitbod. Six themes, Apple and Google sign-in, push notifications, offline operation, and regular exercise-library updates round out the app around the training engine.
+The history experience grew alongside the logger: calendar activity, exercise-level history, recovery views, workout editing, and CSV backup and restore. Six themes, Apple and Google sign-in, push notifications, offline operation, and regular exercise-library updates round out the app around the training engine.
 
 That expansion changed how I think about "finished." The hard part was no longer adding a feature in one screen; it was carrying each new concept through local storage, history, progression, sharing, social sync, backup and restore, and both mobile platforms. Drop sets are a good example: logging the extra legs was only the beginning. They also had to group correctly after reopening a workout, avoid false PRs, survive CSV export and import, display clearly in shared workout cards, and preserve the next progression recommendation.
-
----
 
 ## Shipping on iOS and Android
 
@@ -113,16 +97,12 @@ EAS (Expo Application Services) handled the codesigning and build pipeline: one 
 
 One thing I'd do differently: I spent more time on features than on screenshots and metadata. The App Store listing is the first thing potential users see and it deserves the same attention as the code. I rushed it.
 
----
-
 ## What I Learned
 
-**Local-first made the app genuinely better.** SQLite on device is fast, free, and offline, with no server round-trip to show your workout history. Firebase is right for the parts that cross device boundaries (social, auth, sync), but keeping core data local means the app works well even when connectivity doesn't, and there's no subscription required to access your own data.
+**Local-first made the app better.** SQLite on device is fast, free, and works offline. Firebase handles the parts that cross devices (social, auth, sync), but your own training history never depends on a connection or a subscription.
 
-**Domain model first, schema second.** The core data tables are load-bearing: changes require migrations and touch every part of the app. I should have spent more time nailing the data model before writing screens. I didn't, and I paid for it.
+**Domain model first, schema second.** The core tables touch every part of the app, and every change means a migration. I should have spent more time nailing the data model before writing screens. I didn't, and I paid for it.
 
 **Versioning matters even before launch.** The exercise library versioning system felt like overkill while I was building it. But the first time I needed to fix a wrong muscle group assignment for a popular exercise and push it to devices without waiting for an app update, I was glad it was there.
-
----
 
 Two months is enough time to build something real. It's not enough to build something finished. There's a lot more in the pipeline. Rep is free to download on the [App Store](https://apps.apple.com/us/app/rep-the-workout-app/id6765540272) and [Google Play](https://play.google.com/store/apps/details?id=com.reptheworkout.app).

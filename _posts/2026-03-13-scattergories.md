@@ -18,9 +18,7 @@ links:
 
 A few months ago I wanted to play Scattergories with some friends over a group call. We tried the usual routes: a shared Google Doc, a free online version covered in ads, passing the phone around. None of it felt right. So I did what any developer would do at 11pm on a Friday: I decided to build it myself.
 
-What started as a weekend project turned into one of the most fun and genuinely educational things I've built.
-
----
+What started as a weekend project turned into one of the most fun things I've built, and one I learned a lot from.
 
 ## How It Started
 
@@ -29,8 +27,6 @@ The idea was simple. A real-time multiplayer game where everyone gets the same l
 I'd been wanting to get more comfortable with WebSockets and real-time state management, so this felt like a good excuse. I chose Node.js with Express and Socket.io for the backend, vanilla HTML/CSS/JS for the frontend, Supabase for persistence, and Render.com for hosting, all free tier.
 
 The goal was to keep it simple enough to ship quickly but polished enough that my friends would actually want to use it.
-
----
 
 ## What I Built
 
@@ -45,8 +41,6 @@ The core game loop ended up like this:
 
 The tech stack stayed lean throughout: a single `index.html` for the entire frontend, a `server.js` handling all the socket logic, and a `db.js` for saving sessions to Supabase asynchronously after each round.
 
----
-
 ## Building It With Claude
 
 I should be upfront: I didn't build this alone. I used Claude as a coding collaborator throughout the entire project, not just for boilerplate, but for the hard parts too.
@@ -56,10 +50,6 @@ The workflow was conversational. I'd describe what I wanted, Claude would produc
 What surprised me was how useful it was for the parts I find tedious. Setting up the integration test suite, wiring up the rejoin logic, tracking down which event was causing a race condition. These are the kinds of tasks where I know what I want to achieve but the implementation details slow me down. Having Claude handle the mechanical parts meant I could stay focused on the game design and the player experience.
 
 That said, I had to stay engaged the whole time. Claude would occasionally introduce a fix that solved one problem and created another, or patch something in a way that worked but wasn't quite right. Catching those required actually understanding the code, not just running it. The final product reflects real decisions I made about the voting rules, the data model, how reconnection should work. Claude just helped me build them faster than I could have alone.
-
-If you're a developer who hasn't tried this kind of AI-assisted workflow yet, I'd recommend it. Not as a replacement for thinking, but as a way to spend more of your time on the interesting problems.
-
----
 
 ## What Went Wrong (And How I Fixed It)
 
@@ -91,23 +81,13 @@ I set up integration tests using Jest and `socket.io-client`: fake socket client
 
 The fix was a `force_end_round` socket event, only registered when `NODE_ENV=test`, that immediately calls `endRound()` without waiting for the timer. Tests went from 70 seconds and flaky to 9 seconds and deterministic.
 
----
-
 ## Playing It With Friends
-
-*[Screenshot: lobby screen with 4 players joined]*
 
 After a few weeks of building I finally got a group together to play. We ran three rounds with a 2-minute timer and 15 categories. Within the first round I found two bugs I'd never hit in solo testing: one where a player's answers didn't save when they typed too fast, and one where the review screen showed the wrong round number.
 
-*[Screenshot: review phase with voting in progress]*
-
 Both were fixed the same night. The autosave was debounced too aggressively and was dropping keystrokes. The round number was an off-by-one in the `phase_change` emit.
 
-*[Screenshot: final scores screen with answer summary]*
-
-The scoring and voting held up well. The 2-minute timer created genuine pressure and the duplicate detection worked exactly as intended. Watching two people both write "Avocado" for a food category and have them both get wiped out is genuinely funny.
-
----
+The scoring and voting held up well. The 2-minute timer created real pressure and the duplicate detection worked exactly as intended. Watching two people both write "Avocado" for a food category and have them both get wiped out never stops being funny.
 
 ## What I Learned
 
@@ -115,11 +95,9 @@ The scoring and voting held up well. The 2-minute timer created genuine pressure
 
 **Test with real players early.** I found more bugs in one session with friends than in weeks of solo testing. Real users do things you don't anticipate: they type fast, they drop connection, they sit on the review screen for ten minutes while debating a ruling.
 
-**Free tier is genuinely viable for small apps.** The whole stack (Render, Supabase, GitHub Pages for the domain) costs nothing. Render's free tier spins down after inactivity which means a 30-second cold start, but for a game you're starting intentionally with a group of friends it's a non-issue.
+**Free tiers are plenty for small apps.** The whole stack (Render, Supabase, GitHub Pages for the domain) costs nothing. Render's free tier spins down after inactivity which means a 30-second cold start, but for a game you're starting intentionally with a group of friends it's a non-issue.
 
 **Write tests before the codebase gets complex.** I added tests late and spent a lot of time retrofitting the server to be testable. Exporting `server` and `rooms`, adding `force_end_round`, making Supabase mockable. All of that would have been easier to design in from the start.
-
----
 
 ## What's Next
 
