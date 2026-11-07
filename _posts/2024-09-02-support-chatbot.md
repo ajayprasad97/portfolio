@@ -56,3 +56,5 @@ The fix is a pattern called retrieval-augmented generation, or RAG. It works in 
 ## Where it ended up
 
 It does well on direct, factual questions that the docs already cover clearly. More than anything, it taught me how these assistants actually work, from raw docs to vectors to a grounded answer, which is exactly what I set out to learn.
+
+It also turned out to be the first version of something bigger. This prototype grew into **nTop Assistant**, the in-app assistant nTop users have today, now answering from our docs through a docs MCP server.
