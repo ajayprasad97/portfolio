@@ -73,9 +73,12 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outl
 .about-focus { margin: 4px 0 28px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); }
 .about-focus .eyebrow { margin-bottom: 14px; }
 .about-focus ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.about-focus li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 16px; align-items: baseline; font-size: .8rem; line-height: 1.6; }
+.about-focus li { display: grid; grid-template-columns: 11rem 1fr; gap: 16px; align-items: baseline; font-size: .8rem; line-height: 1.6; }
 .about-focus li strong { color: var(--accent); font-weight: 600; }
 .about-focus li span { color: var(--muted); }
+.about-focus + .about-focus { margin-top: -12px; }
+.about-focus li a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.about-focus li a:hover { text-decoration-color: currentColor; }
 .home-page .home-outside { display: grid; grid-template-columns: 1fr 1fr; background: #e9ede4; border-radius: 4px; overflow: hidden; }
 .outside-image { overflow: hidden; }
 .outside-image img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 1; object-position: center 65%; transition: transform .6s; }
