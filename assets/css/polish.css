@@ -139,3 +139,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--accent-2); outl
   *, *::before, *::after { animation: none !important; transition: none !important; }
   [data-reveal].reveal-pending { opacity: 1; transform: none; }
 }
+.project-content table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: .85rem; }
+.project-content th, .project-content td { text-align: left; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.project-content th { font-weight: 600; color: var(--muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+.project-content a { color: var(--accent); text-underline-offset: 3px; }
